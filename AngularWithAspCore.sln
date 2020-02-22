@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularWithAspCore", "AngularWithAspCore\AngularWithAspCore.csproj", "{34726CCB-833B-4D64-A2C0-22797A125F05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspCoreBl", "AspCoreBl\AspCoreBl.csproj", "{3C10029C-357A-48E2-B049-02D5909E25CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34726CCB-833B-4D64-A2C0-22797A125F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34726CCB-833B-4D64-A2C0-22797A125F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34726CCB-833B-4D64-A2C0-22797A125F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34726CCB-833B-4D64-A2C0-22797A125F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C10029C-357A-48E2-B049-02D5909E25CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C10029C-357A-48E2-B049-02D5909E25CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C10029C-357A-48E2-B049-02D5909E25CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C10029C-357A-48E2-B049-02D5909E25CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DDC7792-B870-4914-8B21-A9FCCAE75466}
+	EndGlobalSection
+EndGlobal

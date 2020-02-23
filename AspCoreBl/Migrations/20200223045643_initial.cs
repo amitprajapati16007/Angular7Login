@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AspCoreBl.Migrations
 {
-    public partial class initial1 : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,22 @@ namespace AspCoreBl.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentDetail",
+                columns: table => new
+                {
+                    PMID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CardOwnerName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    CardNumber = table.Column<string>(type: "nvarchar(16)", nullable: false),
+                    expirationDate = table.Column<string>(type: "nvarchar(5)", nullable: false),
+                    CVV = table.Column<string>(type: "nvarchar(3)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentDetail", x => x.PMID);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,6 +225,9 @@ namespace AspCoreBl.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "PaymentDetail");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -9,8 +9,8 @@ namespace AspCoreBl.Bl
 {
     public class ApplicationUserBl
     {
-        private static UserManager<IdentityUser> _userManager;
-        private static SignInManager<IdentityUser> _signInManager;
+        private  UserManager<IdentityUser> _userManager;
+        private  SignInManager<IdentityUser> _signInManager;
 
         public ApplicationUserBl(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
@@ -18,7 +18,7 @@ namespace AspCoreBl.Bl
             _signInManager = signInManager;
         }
 
-        public static async Task<Object> PostApplicationUser(IdentityUserDTO dto)
+        public async Task<Object> PostApplicationUser(IdentityUserDTO dto)
         {
             var identityUser = new IdentityUser()
             {

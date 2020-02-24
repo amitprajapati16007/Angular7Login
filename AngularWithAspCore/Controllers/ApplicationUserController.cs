@@ -14,9 +14,8 @@ namespace AngularWithAspCore.Controllers
     [ApiController]
     public class ApplicationUserController : ControllerBase
     {
-        
-        private static UserManager<IdentityUser> _userManager;
-        private static SignInManager<IdentityUser> _signInManager;
+        private UserManager<IdentityUser> _userManager;
+        private SignInManager<IdentityUser> _signInManager;
 
         public ApplicationUserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
@@ -26,32 +25,19 @@ namespace AngularWithAspCore.Controllers
 
         [HttpPost]
         [Route("PostApplicationUser")]
-        public static async Task<Object> PostApplicationUser(IdentityUserDTO dto)
+        public async Task<Object> PostApplicationUser(IdentityUserDTO dto)
         {
-            var identityUser = new IdentityUser()
+            try
             {
-                UserName = dto.UserName,
-                Email = dto.Email
-            };
+                ApplicationUserBl ApplicationUserBl = new ApplicationUserBl(_userManager, _signInManager);
+                var result = await ApplicationUserBl.PostApplicationUser(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
 
-            var result = await _userManager.CreateAsync(identityUser, dto.Password);
-            return result;
-
+                throw ex;
+            }
         }
-        //[HttpPost]
-        //[Route("PostApplicationUser")]
-        //public async Task<Object> PostApplicationUser(IdentityUserDTO dto)
-        //{
-        //    try
-        //    {
-        //        var result= await ApplicationUserBl.PostApplicationUser(dto);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
     }
 }

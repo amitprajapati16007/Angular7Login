@@ -1,4 +1,5 @@
-﻿using AspCoreBl.ModelDTO;
+﻿using AspCoreBl.Interfaces;
+using AspCoreBl.ModelDTO;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace AspCoreBl.Bl
 {
-    public class ApplicationUserBl
+    public class ApplicationUserRepository : IApplicationUserRepository
     {
         private  UserManager<IdentityUser> _userManager;
         private  SignInManager<IdentityUser> _signInManager;
 
-        public ApplicationUserBl(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ApplicationUserRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -1,4 +1,6 @@
 using AspCoreBl;
+using AspCoreBl.Bl;
+using AspCoreBl.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,8 @@ namespace AngularWithAspCore
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<PaymentDetailContext>();
+
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

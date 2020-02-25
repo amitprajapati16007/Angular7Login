@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspCoreBl.Bl;
+using AspCoreBl.Interfaces;
 using AspCoreBl.ModelDTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,13 +15,11 @@ namespace AngularWithAspCore.Controllers
     [ApiController]
     public class ApplicationUserController : ControllerBase
     {
-        private UserManager<IdentityUser> _userManager;
-        private SignInManager<IdentityUser> _signInManager;
+        private IApplicationUserRepository _aApplicationUserRepository;
 
-        public ApplicationUserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ApplicationUserController(IApplicationUserRepository ApplicationUserRepository)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _aApplicationUserRepository = ApplicationUserRepository;
         }
 
         [HttpPost]
@@ -29,8 +28,7 @@ namespace AngularWithAspCore.Controllers
         {
             try
             {
-                ApplicationUserBl ApplicationUserBl = new ApplicationUserBl(_userManager, _signInManager);
-                var result = await ApplicationUserBl.PostApplicationUser(dto);
+                var result = await _aApplicationUserRepository.PostApplicationUser(dto);
                 return Ok(result);
             }
             catch (Exception ex)

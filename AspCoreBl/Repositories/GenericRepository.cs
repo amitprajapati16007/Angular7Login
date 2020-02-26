@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
+using System.Linq;
 
 namespace AspCoreBl.Repositories
 {
@@ -21,7 +23,10 @@ namespace AspCoreBl.Repositories
         {
             return _dbSet;
         }
-
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Where(predicate);
+        }
         public T GetByID(int id)
         {
             return _dbSet
@@ -35,7 +40,7 @@ namespace AspCoreBl.Repositories
 
         public void Update(T t)
         {
-            EntityEntry dbEntityEntry = _dbSet.Attach(t);
+            EntityEntry dbEntityEntry = _db.Entry<T>(t);
             dbEntityEntry.State = EntityState.Modified;
         }
 
@@ -43,7 +48,7 @@ namespace AspCoreBl.Repositories
         {
             _dbSet.Remove(t);
         }
-        public virtual void Save()
+        public virtual void SaveChanges()
         {
             _db.SaveChanges();
         }

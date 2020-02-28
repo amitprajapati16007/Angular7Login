@@ -37,5 +37,23 @@ namespace AngularWithAspCore.Controllers
                 throw ex;
             }
         }
+
+
+        [HttpGet]
+        [Route("UserExist")]
+        public async Task<bool> UserExist(IdentityUserDTO dto)
+        {
+            try
+            {
+                return await _aApplicationUserRepository.UserExist(dto);                
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        
     }
 }

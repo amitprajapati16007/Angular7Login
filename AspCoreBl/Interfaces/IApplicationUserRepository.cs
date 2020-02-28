@@ -9,5 +9,7 @@ namespace AspCoreBl.Interfaces
     public interface IApplicationUserRepository 
     {
         Task<Object> PostApplicationUser(IdentityUserDTO dto);
+        Task<bool> UserExist(IdentityUserDTO dto);
+        
     }
 }

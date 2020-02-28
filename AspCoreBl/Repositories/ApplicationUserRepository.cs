@@ -20,6 +20,7 @@ namespace AspCoreBl.Bl
         }
 
         public async Task<Object> PostApplicationUser(IdentityUserDTO dto)
+
         {
             var identityUser = new IdentityUser()
             {
@@ -28,8 +29,22 @@ namespace AspCoreBl.Bl
             };
 
             var result = await _userManager.CreateAsync(identityUser, dto.Password);
+
             return result;
 
         }
+
+        public async Task<bool> UserExist(IdentityUserDTO dto)
+        {
+            
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+            if (user==null)
+            {
+                return false;
+            }
+            return true;
+
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AngularWithAspCore.Misc;
 using AspCoreBl.Bl;
 using AspCoreBl.Interfaces;
 using AspCoreBl.ModelDTO;
@@ -13,7 +14,7 @@ namespace AngularWithAspCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationUserController : ControllerBase
+    public class ApplicationUserController : BaseController
     {
         private IApplicationUserRepository _aApplicationUserRepository;
 
@@ -54,6 +55,20 @@ namespace AngularWithAspCore.Controllers
             }
         }
 
-        
+        [HttpPost]
+        [Route("LoginAsync")]
+        public async Task<JsonResult> LoginAsync(IdentityUserDTO dto)
+        {
+            try
+            {
+                var result = await _aApplicationUserRepository.LoginAsync(dto);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

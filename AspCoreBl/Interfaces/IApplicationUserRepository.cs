@@ -10,6 +10,6 @@ namespace AspCoreBl.Interfaces
     {
         Task<Object> PostApplicationUser(IdentityUserDTO dto);
         Task<bool> UserExist(IdentityUserDTO dto);
-        
+        Task<LoginSuccessViewModel> LoginAsync(IdentityUserDTO dto);
     }
 }

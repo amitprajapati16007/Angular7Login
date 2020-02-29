@@ -34,6 +34,24 @@ namespace AspCoreBl.Bl
 
         }
 
+        public async Task<LoginSuccessViewModel> LoginAsync(IdentityUserDTO dto)
+        {
+            var result = await _signInManager.PasswordSignInAsync(dto.UserName,
+                  dto.Password, false, false);
+            if (result.Succeeded)
+            {
+                var user = await _userManager.FindByNameAsync(dto.UserName);
+                var loginSuccessViewModel = new LoginSuccessViewModel
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+                return loginSuccessViewModel;
+            }
+            return null;
+        }
+
         public async Task<bool> UserExist(IdentityUserDTO dto)
         {
             

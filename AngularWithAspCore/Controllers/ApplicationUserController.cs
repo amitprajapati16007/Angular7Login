@@ -29,6 +29,7 @@ namespace AngularWithAspCore.Controllers
         {
             try
             {
+                var j = HttpContext.Request.Host;
                 var result = await _aApplicationUserRepository.PostApplicationUser(dto);
                 return Ok(result);
             }
@@ -39,6 +40,27 @@ namespace AngularWithAspCore.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ConfirmEmailAsync")]
+        public async Task<IActionResult> ConfirmEmailAsync(string email, string code)
+        {
+            try
+            {
+                var j = HttpContext.Request.Host;
+                var result = await _aApplicationUserRepository.ConfirmEmailAsync(email,code);
+                if (result)
+                    return OKResult(1, "Email confirmed");
+
+                return OKResult(0, "Link expired.");
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        
 
         [HttpGet]
         [Route("UserExist")]

@@ -57,12 +57,15 @@ namespace AngularWithAspCore.Controllers
 
         [HttpPost]
         [Route("LoginAsync")]
-        public async Task<JsonResult> LoginAsync(IdentityUserDTO dto)
+        public async Task<IActionResult> LoginAsync(IdentityUserDTO dto)
         {
             try
             {
                 var result = await _aApplicationUserRepository.LoginAsync(dto);
-                return Json(result);
+                if (result == null)
+                    return OKResult(0, "Invalid username or password.");
+
+                return OKResult(1, "Success", result);
             }
             catch (Exception ex)
             {

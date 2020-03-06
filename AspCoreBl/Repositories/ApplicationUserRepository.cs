@@ -43,12 +43,14 @@ namespace AspCoreBl.Bl
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 //var callbackUrl = (
-                //   "ConfirmEmail", "Account",
-                //   new { userId = user.Email, code = code },
-                //   protocol: _httpContext.HttpContext.Request.Host);
+                //   "ConfirmEmailAsync", "ApplicationUser",
+                //   new { email = user.Email, code = code },
+                //   _httpContext.HttpContext.Request.Scheme);
+
+                var callbackUrl = _httpContext.HttpContext.Request.Scheme+"://" + _httpContext.HttpContext.Request.Host+ "/ApplicationUser/ConfirmEmailAsync?email="+ user.Id + "&code="+ code + "";
 
 
-                var callbackUrl = _httpContext.HttpContext.Request.Host;
+                //  var callbackUrl = _httpContext.HttpContext.Request.Host;
                 var body= "Confirm your account"+
                    "Please confirm your account by clicking this link: <a href=\""
                                                    + callbackUrl + "\">link</a>";

@@ -25,13 +25,13 @@ namespace AngularWithAspCore.Controllers
 
         [HttpPost]
         [Route("PostApplicationUser")]
-        public async Task<Object> PostApplicationUser(IdentityUserDTO dto)
+        public async Task<IActionResult> PostApplicationUser(IdentityUserDTO dto)
         {
             try
             {
                 var j = HttpContext.Request.Host;
                 var result = await _aApplicationUserRepository.PostApplicationUser(dto);
-                return Ok(result);
+                return OKResult(result.Key, result.Value);
             }
             catch (Exception ex)
             {
@@ -42,12 +42,12 @@ namespace AngularWithAspCore.Controllers
 
         [HttpGet]
         [Route("ConfirmEmailAsync")]
-        public async Task<IActionResult> ConfirmEmailAsync(string email, string code)
+        public async Task<IActionResult> ConfirmEmailAsync(string UserName, string code)
         {
             try
             {
                 var j = HttpContext.Request.Host;
-                var result = await _aApplicationUserRepository.ConfirmEmailAsync(email,code);
+                var result = await _aApplicationUserRepository.ConfirmEmailAsync(UserName, code);
                 if (result)
                     return OKResult(1, "Email confirmed");
 

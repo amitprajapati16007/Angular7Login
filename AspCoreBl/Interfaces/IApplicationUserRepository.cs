@@ -8,9 +8,9 @@ namespace AspCoreBl.Interfaces
 {
     public interface IApplicationUserRepository 
     {
-        Task<Object> PostApplicationUser(IdentityUserDTO dto);
+        Task<KeyValuePair<int, string>> PostApplicationUser(IdentityUserDTO dto);
         Task<bool> UserExist(IdentityUserDTO dto);
         Task<LoginSuccessViewModel> LoginAsync(IdentityUserDTO dto);
-        Task<bool> ConfirmEmailAsync(string email, string code);
+        Task<bool> ConfirmEmailAsync(string UserName, string code);
     }
 }

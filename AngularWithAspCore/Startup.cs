@@ -2,6 +2,7 @@ using AspCoreBl;
 using AspCoreBl.Bl;
 using AspCoreBl.Interfaces;
 using AspCoreBl.Repositories;
+using AspCoreBl.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,9 @@ namespace AngularWithAspCore
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<PaymentDetailContext>();
+            
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddTransient<EmailService>();
 
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IPaymentDetailRepository, PaymentDetailRepository>();

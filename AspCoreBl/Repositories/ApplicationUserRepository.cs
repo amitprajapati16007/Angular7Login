@@ -1,7 +1,10 @@
 ﻿using AspCoreBl.Interfaces;
+using AspCoreBl.Misc;
 using AspCoreBl.ModelDTO;
+using AspCoreBl.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -17,71 +20,66 @@ namespace AspCoreBl.Bl
         private  UserManager<IdentityUser> _userManager;
         private  SignInManager<IdentityUser> _signInManager;
         private readonly IHttpContextAccessor _httpContext;
-        
+        private readonly Services.EmailService _emailService;
+
+
         public ApplicationUserRepository(
             UserManager<IdentityUser> userManager, 
             SignInManager<IdentityUser> signInManager,
-            IHttpContextAccessor httpContext
+            IHttpContextAccessor httpContext,
+            IOptions<EmailSettings> emailSettings
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _httpContext = httpContext;
-            
+            _emailService = new Services.EmailService(emailSettings);
+
+
         }
 
-        public async Task<Object> PostApplicationUser(IdentityUserDTO dto)
+        public async Task<KeyValuePair<int, string>> PostApplicationUser(IdentityUserDTO dto)
         {
+
+            var isUserExixts = await UserExist(dto);
+            if (isUserExixts)
+                return new KeyValuePair<int, string>(-3, "User already exists for " + dto.UserName + " email.");
+
             var user = new IdentityUser()
             {
                 UserName = dto.UserName,
-                Email = dto.Email
+                Email = dto.Email,               
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
-            if (result.Succeeded)
-            {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //var callbackUrl = (
-                //   "ConfirmEmailAsync", "ApplicationUser",
-                //   new { email = user.Email, code = code },
-                //   _httpContext.HttpContext.Request.Scheme);
-
-                var callbackUrl = _httpContext.HttpContext.Request.Scheme+"://" + _httpContext.HttpContext.Request.Host+ "/ApplicationUser/ConfirmEmailAsync?email="+ user.Id + "&code="+ code + "";
-
-
-                //  var callbackUrl = _httpContext.HttpContext.Request.Host;
-                var body= "Confirm your account"+
-                   "Please confirm your account by clicking this link: <a href=\""
-                                                   + callbackUrl + "\">link</a>";
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "smtp.gmail.com";
-                client.EnableSsl = true;
-                //client.Timeout = 10000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("amit.prajapati16007@gmail.com", "007Password7@@");
-
-                try
-                {
-                    client.SendMailAsync("amit.prajapati16007@gmail.com", "amit.prajapati16007@gmail.com", "Confirm your account", body);
-                }
-                catch (Exception ex)
-                {
-
-                    throw;
-                } 
-                
-
+            if (!result.Succeeded)
+            {   
+                return new KeyValuePair<int, string>(-2, result.Errors.ToString());
             }
-            return result;
 
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var fullname = dto.UserName;
+            var mailContent = await EmailBodyCreator.CreateConfirmEmailBody(Utilities.GetCurrHost(_httpContext), fullname, dto.UserName, code);
+            try
+            {
+                await _emailService.SendMailAsync(new List<MailAddress>() { new MailAddress(user.Email) }, null, null, AppCommon.AppName + " - Verify Email", mailContent, null);
+                return new KeyValuePair<int, string>(1, "User successfully created, email sent.");
+            }
+            catch (Exception ex)
+            {
+                var resDeleteUser = await _userManager.DeleteAsync(user);
+                if (!resDeleteUser.Succeeded)
+                {
+                    return new KeyValuePair<int, string>(-6, "User successfully created but failed to sent email, tried to remove user but error occured.");
+                }
+                return new KeyValuePair<int, string>(-4, "User successfully created but failed to sent email, deleted user.");
+            }
         }
 
-        public async Task<bool> ConfirmEmailAsync(string email, string code)
+        public async Task<bool> ConfirmEmailAsync(string UserName, string code)
         {
-            var user = await _userManager.FindByIdAsync(email);
+            var user = await _userManager.FindByNameAsync(UserName);
 
             code = WebUtility.UrlDecode(code);
             code = code.Replace(' ', '+');

@@ -29,7 +29,6 @@ namespace AngularWithAspCore.Controllers
         {
             try
             {
-                var j = HttpContext.Request.Host;
                 var result = await _aApplicationUserRepository.PostApplicationUser(dto);
                 return OKResult(result.Key, result.Value);
             }
@@ -84,10 +83,7 @@ namespace AngularWithAspCore.Controllers
             try
             {
                 var result = await _aApplicationUserRepository.LoginAsync(dto);
-                if (result == null)
-                    return OKResult(0, "Invalid username or password.");
-
-                return OKResult(1, "Success", result);
+                return OKResult(result.Key, result.Value);
             }
             catch (Exception ex)
             {

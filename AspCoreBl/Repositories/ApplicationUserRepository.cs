@@ -17,14 +17,14 @@ namespace AspCoreBl.Bl
 {
     public class ApplicationUserRepository : IApplicationUserRepository
     {
-        private  UserManager<IdentityUser> _userManager;
-        private  SignInManager<IdentityUser> _signInManager;
+        private UserManager<IdentityUser> _userManager;
+        private SignInManager<IdentityUser> _signInManager;
         private readonly IHttpContextAccessor _httpContext;
         private readonly Services.EmailService _emailService;
 
 
         public ApplicationUserRepository(
-            UserManager<IdentityUser> userManager, 
+            UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IHttpContextAccessor httpContext,
             IOptions<EmailSettings> emailSettings
@@ -48,12 +48,12 @@ namespace AspCoreBl.Bl
             var user = new IdentityUser()
             {
                 UserName = dto.UserName,
-                Email = dto.Email,               
+                Email = dto.Email,
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
-            {   
+            {
                 return new KeyValuePair<int, string>(-2, result.Errors.ToString());
             }
 
@@ -86,35 +86,43 @@ namespace AspCoreBl.Bl
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
-            {             
+            {
                 return true;
             }
             return false;
         }
 
-        public async Task<LoginSuccessViewModel> LoginAsync(IdentityUserDTO dto)
+        public async Task<KeyValuePair<string, LoginSuccessViewModel>> LoginAsync(IdentityUserDTO dto)
         {
             var result = await _signInManager.PasswordSignInAsync(dto.UserName,
                   dto.Password, false, false);
-            if (result.Succeeded)
+
+            if (!result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(dto.UserName);
-                var loginSuccessViewModel = new LoginSuccessViewModel
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email
-                };
-                return loginSuccessViewModel;
+                return new KeyValuePair<string, LoginSuccessViewModel>("username or password is incorrect please try again", null);
             }
-            return null;
+
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+
+            if (!user.EmailConfirmed)
+            {
+                return new KeyValuePair<string, LoginSuccessViewModel>("Invalid login attempt. You must have a confirmed email account.", null);
+            }
+            var loginSuccessViewModel = new LoginSuccessViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            };
+            return new KeyValuePair<string, LoginSuccessViewModel>("", loginSuccessViewModel);
+
         }
 
         public async Task<bool> UserExist(IdentityUserDTO dto)
         {
-            
+
             var user = await _userManager.FindByNameAsync(dto.UserName);
-            if (user==null)
+            if (user == null)
             {
                 return false;
             }

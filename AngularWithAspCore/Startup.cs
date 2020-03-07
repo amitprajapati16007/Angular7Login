@@ -1,6 +1,7 @@
 using AspCoreBl;
 using AspCoreBl.Bl;
 using AspCoreBl.Interfaces;
+using AspCoreBl.Model;
 using AspCoreBl.Repositories;
 using AspCoreBl.Services;
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +32,7 @@ namespace AngularWithAspCore
             services.AddDbContext<PaymentDetailContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<PaymentDetailContext>();
             
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
@@ -50,6 +51,8 @@ namespace AngularWithAspCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+           
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

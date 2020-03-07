@@ -20,6 +20,11 @@ namespace AngularWithAspCore.Misc
         {
             return Json(PrepareResultObject(status, message, data), AppCommon.SerializerSettings);
         }
+
+        public IActionResult OKResult<T>(string message, T data) where T : class
+        {
+            return Json(PrepareResultObject<object>(null, message, data), AppCommon.SerializerSettings);
+        }
         private ApiResult<T> PrepareResultObject<T>(int? status, string message, T data) where T : class
         {
             var resObj = new ApiResult<T>()

@@ -44,8 +44,7 @@ namespace AngularWithAspCore.Controllers
         public async Task<IActionResult> ConfirmEmailAsync(string UserName, string code)
         {
             try
-            {
-                var j = HttpContext.Request.Host;
+            {   
                 var result = await _aApplicationUserRepository.ConfirmEmailAsync(UserName, code);
                 if (result)
                     return OKResult(1, "Email confirmed");

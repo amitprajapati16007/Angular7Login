@@ -33,8 +33,9 @@ namespace AngularWithAspCore
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<PaymentDetailContext>();
-            
+                .AddEntityFrameworkStores<PaymentDetailContext>()
+                .AddDefaultTokenProviders();
+
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddTransient<EmailService>();
 

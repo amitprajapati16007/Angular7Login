@@ -1,5 +1,6 @@
 ﻿using AspCoreBl.Interfaces;
 using AspCoreBl.Misc;
+using AspCoreBl.Model;
 using AspCoreBl.ModelDTO;
 using AspCoreBl.Services;
 using Microsoft.AspNetCore.Http;
@@ -17,15 +18,15 @@ namespace AspCoreBl.Bl
 {
     public class ApplicationUserRepository : IApplicationUserRepository
     {
-        private UserManager<IdentityUser> _userManager;
-        private SignInManager<IdentityUser> _signInManager;
+        private UserManager<ApplicationUser> _userManager;
+        private SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContext;
         private readonly Services.EmailService _emailService;
 
 
         public ApplicationUserRepository(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IHttpContextAccessor httpContext,
             IOptions<EmailSettings> emailSettings
             )
@@ -45,10 +46,12 @@ namespace AspCoreBl.Bl
             if (isUserExixts)
                 return new KeyValuePair<int, string>(-3, "User already exists for " + dto.UserName + " email.");
 
-            var user = new IdentityUser()
+            var user = new ApplicationUser()
             {
                 UserName = dto.UserName,
                 Email = dto.Email,
+                FirstName=dto.FirstName,
+                LastName = dto.LastName
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
@@ -59,7 +62,7 @@ namespace AspCoreBl.Bl
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var fullname = dto.UserName;
+            var fullname = dto.LastName + " "+dto.FirstName;
             var mailContent = await EmailBodyCreator.CreateConfirmEmailBody(Utilities.GetCurrHost(_httpContext), fullname, dto.UserName, code);
             try
             {

@@ -23,6 +23,7 @@ namespace AspCoreBl.Misc
             }
         }
         public const string AppName = "App";
+        public static readonly byte[] SymmetricSecurityKey = Encoding.ASCII.GetBytes("CarnivalPreCarnivalSale_Carnival_Pre_CarnivalSale_Carnival_PreSale");
         private static readonly string currDirectory = Directory.GetCurrentDirectory();
         private const string appfilesFolderName = "Appfiles";
         private const string emailtemplatesFolderName = "Emailtemplates";

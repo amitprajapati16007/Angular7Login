@@ -6,13 +6,17 @@ using AspCoreBl.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace AspCoreBl.Bl
 {
@@ -111,12 +115,25 @@ namespace AspCoreBl.Bl
             {
                 return new KeyValuePair<string, LoginSuccessViewModel>("Invalid login attempt. You must have a confirmed email account.", null);
             }
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();            
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(AppCommon.SymmetricSecurityKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
             var loginSuccessViewModel = new LoginSuccessViewModel
             {
                 Id = user.Id,
                 UserName = user.UserName,
-                Email = user.Email
-            };
+                Email = user.Email,
+                Token = tokenHandler.WriteToken(token)
+        };
             return new KeyValuePair<string, LoginSuccessViewModel>("", loginSuccessViewModel);
 
         }

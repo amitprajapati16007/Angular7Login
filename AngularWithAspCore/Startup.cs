@@ -1,9 +1,11 @@
 using AspCoreBl;
 using AspCoreBl.Bl;
 using AspCoreBl.Interfaces;
+using AspCoreBl.Misc;
 using AspCoreBl.Model;
 using AspCoreBl.Repositories;
 using AspCoreBl.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AngularWithAspCore
 {
@@ -37,11 +40,29 @@ namespace AngularWithAspCore
                 .AddDefaultTokenProviders();
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddTransient<EmailService>();
 
             services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             services.AddScoped<IPaymentDetailRepository, PaymentDetailRepository>();
+
             
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(AppCommon.SymmetricSecurityKey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

@@ -2,6 +2,7 @@
 using AspCoreBl.Misc;
 using AspCoreBl.Model;
 using AspCoreBl.ModelDTO;
+using AspCoreBl.Repositories;
 using AspCoreBl.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
@@ -20,26 +22,27 @@ using System.Threading.Tasks;
 
 namespace AspCoreBl.Bl
 {
-    public class ApplicationUserRepository : IApplicationUserRepository
+    public class ApplicationUserRepository : GenericRepository<ApplicationUser>, IApplicationUserRepository
     {
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContext;
         private readonly Services.EmailService _emailService;
-
+        private readonly PaymentDetailContext _db;
 
         public ApplicationUserRepository(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IHttpContextAccessor httpContext,
-            IOptions<EmailSettings> emailSettings
-            )
+            IOptions<EmailSettings> emailSettings,
+            PaymentDetailContext db
+            ) : base(db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _httpContext = httpContext;
             _emailService = new Services.EmailService(emailSettings);
-
+            _db = db;
 
         }
 
@@ -190,6 +193,19 @@ namespace AspCoreBl.Bl
             return new KeyValuePair<int, LoginSuccessViewModel>(2, null);
         }
 
+        public async Task<KeyValuePair<int, object>> ChangePasswordAsync(ChangePasswordViewModel model, ApplicationUser user)
+        {
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                KeyValuePair<string, LoginSuccessViewModel> loginRes = await LoginAsync(new IdentityUserDTO() { UserName = user.UserName, Password = model.NewPassword });
+                if (loginRes.Key != null)
+                    return new KeyValuePair<int, object>(1, loginRes.Value);
+            }
+            return new KeyValuePair<int, object>(2, result.Errors);
+        }
+
         public async Task<bool> UserExist(IdentityUserDTO dto)
         {
 
@@ -201,6 +217,13 @@ namespace AspCoreBl.Bl
             return true;
 
         }
+
+
+        public async Task<ApplicationUser> GetSingleAsyncs(Expression<Func<ApplicationUser, bool>> predicate, params Expression<Func<ApplicationUser, object>>[] includeProperties)
+        {
+                return await GetSingleAsync(predicate, includeProperties);
+        }
+
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();

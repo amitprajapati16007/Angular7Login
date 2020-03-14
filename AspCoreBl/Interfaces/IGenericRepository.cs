@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AspCoreBl.Interfaces
 {
@@ -15,5 +16,7 @@ namespace AspCoreBl.Interfaces
         void Update(T entity);
         void Delete(T entity);
         void SaveChanges();
+
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
     }
 }

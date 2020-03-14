@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AngularWithAspCore.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ApplicationUserController : BaseController
@@ -25,7 +26,7 @@ namespace AngularWithAspCore.Controllers
         {
             _aApplicationUserRepository = ApplicationUserRepository;
         }
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("PostApplicationUser")]
         public async Task<IActionResult> PostApplicationUser(IdentityUserDTO dto)
@@ -41,7 +42,7 @@ namespace AngularWithAspCore.Controllers
                 throw ex;
             }
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("ConfirmEmailAsync")]
         public async Task<IActionResult> ConfirmEmailAsync(string email, string code)
@@ -61,8 +62,8 @@ namespace AngularWithAspCore.Controllers
                 throw ex;
             }
         }
-        
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("UserExist")]
         public async Task<bool> UserExist(IdentityUserDTO dto)
@@ -78,6 +79,7 @@ namespace AngularWithAspCore.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("LoginAsync")]
         public async Task<IActionResult> LoginAsync(IdentityUserDTO dto)
@@ -132,6 +134,29 @@ namespace AngularWithAspCore.Controllers
             //Will never come to this
             throw new AppException("Something went wrong.");
         }
+
+        [HttpPost]
+        [Route("changepassword")]
+        public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return InvalidModelStateResult(ModelState);
+            
+               var userid = User.GetUserId();
+            if (string.IsNullOrEmpty(userid))
+                return OtherResult(HttpStatusCode.BadRequest, "Authorized user not found.");
+
+            var user = await _aApplicationUserRepository.GetSingleAsyncs(x => x.Id == userid);
+            if (user == null)
+                return OtherResult(HttpStatusCode.BadRequest, "Authorized user not found.");
+
+            var result = await _aApplicationUserRepository.ChangePasswordAsync(model, user);
+            if (result.Key == 1)
+                return OKResult(result.Key, "Password successfully changed. Login successful.", result.Value);
+
+            return OKResult(result.Key, "Change password falied.", result.Value);
+        }
+
         [HttpGet]
         [Route("logout")]
         public async Task<IActionResult> Logout()

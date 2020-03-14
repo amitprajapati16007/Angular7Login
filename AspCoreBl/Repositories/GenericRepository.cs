@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AspCoreBl.Repositories
 {
@@ -52,6 +53,19 @@ namespace AspCoreBl.Repositories
         {
             _db.SaveChanges();
         }
+
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _db.Set<T>();
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
 
 
     }

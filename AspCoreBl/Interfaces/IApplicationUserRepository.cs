@@ -1,6 +1,8 @@
-﻿using AspCoreBl.ModelDTO;
+﻿using AspCoreBl.Model;
+using AspCoreBl.ModelDTO;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +16,8 @@ namespace AspCoreBl.Interfaces
         Task<bool> ConfirmEmailAsync(string email, string code);
         Task<bool> ForgotPasswordAsync(string email);
         Task<KeyValuePair<int, LoginSuccessViewModel>> ResetPasswordAsync(ResetPasswordViewModel model);
+        Task<KeyValuePair<int, object>> ChangePasswordAsync(ChangePasswordViewModel model, ApplicationUser user);
+        Task<ApplicationUser> GetSingleAsyncs(Expression<Func<ApplicationUser, bool>> predicate, params Expression<Func<ApplicationUser, object>>[] includeProperties);
         Task LogoutAsync();
     }
 }

@@ -5,6 +5,18 @@ using System.Text;
 
 namespace AspCoreBl.ModelDTO
 {
+
+    public class LoginViewModel
+    {
+        [Required(ErrorMessage = "Username is required.")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
     public class LoginSuccessViewModel
     {
         public string Id { get; set; }
@@ -34,5 +46,14 @@ namespace AspCoreBl.ModelDTO
         [Required(ErrorMessage = "Code is required.")]
         public string Code { get; set; }
     }
+    public class ChangePasswordViewModel
+    {
+        [Required(ErrorMessage = "New password is required.")]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
 
+        [Required(ErrorMessage = "Current password is required.")]
+        [DataType(DataType.Password)]
+        public string CurrentPassword { get; set; }
+    }
 }

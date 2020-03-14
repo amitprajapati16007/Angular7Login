@@ -12,5 +12,6 @@ namespace AspCoreBl.Interfaces
         Task<bool> UserExist(IdentityUserDTO dto);
         Task<KeyValuePair<string, LoginSuccessViewModel>> LoginAsync(IdentityUserDTO dto);
         Task<bool> ConfirmEmailAsync(string UserName, string code);
+        Task LogoutAsync();
     }
 }

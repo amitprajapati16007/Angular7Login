@@ -90,5 +90,13 @@ namespace AngularWithAspCore.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _aApplicationUserRepository.LogoutAsync();
+            return OKResult(1, "Logout successful.");
+        }
     }
 }

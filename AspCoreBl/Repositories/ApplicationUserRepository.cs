@@ -123,7 +123,7 @@ namespace AspCoreBl.Bl
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(AppCommon.SymmetricSecurityKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -149,7 +149,10 @@ namespace AspCoreBl.Bl
             return true;
 
         }
-
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
 
 
     }

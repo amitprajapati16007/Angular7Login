@@ -59,7 +59,7 @@ namespace AngularWithAspCore
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(AppCommon.SymmetricSecurityKey),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
                 };
             });
 

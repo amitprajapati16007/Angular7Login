@@ -170,6 +170,25 @@ namespace AspCoreBl.Bl
 
             return true;
         }
+        public async Task<KeyValuePair<int, LoginSuccessViewModel>> ResetPasswordAsync(ResetPasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return new KeyValuePair<int, LoginSuccessViewModel>(0, null);
+
+            model.Code = WebUtility.UrlDecode(model.Code);
+            model.Code = model.Code.Replace(' ', '+');
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
+            if (result.Succeeded)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                KeyValuePair<string, LoginSuccessViewModel> loginRes = await LoginAsync(new IdentityUserDTO() { UserName = user.UserName, Password = model.NewPassword });
+                if (loginRes.Key != null)
+                    return new KeyValuePair<int, LoginSuccessViewModel>(1, loginRes.Value);
+            }
+            return new KeyValuePair<int, LoginSuccessViewModel>(2, null);
+        }
 
         public async Task<bool> UserExist(IdentityUserDTO dto)
         {

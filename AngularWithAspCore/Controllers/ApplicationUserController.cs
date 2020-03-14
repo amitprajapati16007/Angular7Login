@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AngularWithAspCore.Misc;
 using AspCoreBl.Bl;
 using AspCoreBl.Interfaces;
+using AspCoreBl.Misc;
 using AspCoreBl.ModelDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -91,6 +94,44 @@ namespace AngularWithAspCore.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return OtherResult(HttpStatusCode.BadRequest, "Email is required.");
+
+            var result = await _aApplicationUserRepository.ForgotPasswordAsync(email);
+
+            if (result)
+                return OKResult(1, "Email sent for resetting password.");
+
+            return OtherResult(HttpStatusCode.BadRequest, "User not found for provided email.");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return InvalidModelStateResult(ModelState);
+
+            var result = await _aApplicationUserRepository.ResetPasswordAsync(model);
+            switch (result.Key)
+            {
+                case 0:
+                    return OtherResult(HttpStatusCode.BadRequest, "User not found for provided email.");
+                case 1:
+                    return OKResult(1, "Password successfully reset. Login successful.", result.Value);
+                case 2:
+                    return OKResult(2, "Link expired.");
+            }
+
+            //Will never come to this
+            throw new AppException("Something went wrong.");
+        }
         [HttpGet]
         [Route("logout")]
         public async Task<IActionResult> Logout()

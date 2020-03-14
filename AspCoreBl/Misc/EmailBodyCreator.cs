@@ -11,21 +11,21 @@ namespace AspCoreBl.Misc
 {
     public static class EmailBodyCreator
     {
-        public static async Task<string> CreateConfirmEmailBody(string hostUrl, string fullname, string UserName, string code)
+        public static async Task<string> CreateConfirmEmailBody(string hostUrl, string fullname, string email, string code)
         {
             var templateStr = "";
 
             var currHostUrl = hostUrl;
 
-            var confirmEmailRouteUrlPart = "/api/ApplicationUser/ConfirmEmailAsync?UserName=[UserName]&code=[code]";
+            var confirmEmailRouteUrlPart = "/api/ApplicationUser/ConfirmEmailAsync?email=[email]&code=[code]";
 
             var callbackUrl = "javascript:void(0)";
-            if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(UserName))
+            if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(email))
             {
                 callbackUrl =
                     currHostUrl +
                     confirmEmailRouteUrlPart
-                        .Replace("[UserName]", WebUtility.UrlEncode(UserName))
+                        .Replace("[email]", WebUtility.UrlEncode(email))
                         .Replace("[code]", WebUtility.UrlEncode(code));
             }
 

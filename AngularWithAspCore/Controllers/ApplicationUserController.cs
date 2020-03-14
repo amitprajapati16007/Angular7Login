@@ -41,11 +41,11 @@ namespace AngularWithAspCore.Controllers
 
         [HttpGet]
         [Route("ConfirmEmailAsync")]
-        public async Task<IActionResult> ConfirmEmailAsync(string UserName, string code)
+        public async Task<IActionResult> ConfirmEmailAsync(string email, string code)
         {
             try
             {   
-                var result = await _aApplicationUserRepository.ConfirmEmailAsync(UserName, code);
+                var result = await _aApplicationUserRepository.ConfirmEmailAsync(email, code);
                 if (result)
                     return OKResult(1, "Email confirmed");
 

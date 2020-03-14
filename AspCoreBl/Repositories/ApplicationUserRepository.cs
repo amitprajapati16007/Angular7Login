@@ -45,16 +45,16 @@ namespace AspCoreBl.Bl
 
         public async Task<KeyValuePair<int, string>> PostApplicationUser(IdentityUserDTO dto)
         {
-
+            dto.UserName = dto.Email;
             var isUserExixts = await UserExist(dto);
             if (isUserExixts)
                 return new KeyValuePair<int, string>(-3, "User already exists for " + dto.UserName + " email.");
 
             var user = new ApplicationUser()
             {
-                UserName = dto.UserName,
+                UserName = dto.Email,
                 Email = dto.Email,
-                FirstName=dto.FirstName,
+                FirstName = dto.FirstName,
                 LastName = dto.LastName
             };
 
@@ -63,10 +63,21 @@ namespace AspCoreBl.Bl
             {
                 return new KeyValuePair<int, string>(-2, result.Errors.ToString());
             }
+            var roleRes = await _userManager.AddToRoleAsync(user, Role.WebUser.ToString());
+            if (!roleRes.Succeeded)
+            {
 
+                var resDeleteUser = await _userManager.DeleteAsync(user);
+                if (!resDeleteUser.Succeeded)
+                {
+                    return new KeyValuePair<int, string>(-7, "User successfully created but failed to set role, tried to remove user but error occured.");
+                }
+
+                return new KeyValuePair<int, string>(-8, "User successfully created but failed to set role, removed user.");
+            }
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var fullname = dto.LastName + " "+dto.FirstName;
+            var fullname = dto.LastName + " " + dto.FirstName;
             var mailContent = await EmailBodyCreator.CreateConfirmEmailBody(Utilities.GetCurrHost(_httpContext), fullname, dto.UserName, code);
             try
             {
@@ -84,9 +95,9 @@ namespace AspCoreBl.Bl
             }
         }
 
-        public async Task<bool> ConfirmEmailAsync(string UserName, string code)
+        public async Task<bool> ConfirmEmailAsync(string email, string code)
         {
-            var user = await _userManager.FindByNameAsync(UserName);
+            var user = await _userManager.FindByEmailAsync(email);
 
             code = WebUtility.UrlDecode(code);
             code = code.Replace(' ', '+');
@@ -115,13 +126,20 @@ namespace AspCoreBl.Bl
             {
                 return new KeyValuePair<string, LoginSuccessViewModel>("Invalid login attempt. You must have a confirmed email account.", null);
             }
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = (Role)Enum.Parse(typeof(Role), roles[0]);
+
+            if (role == Role.System) return new KeyValuePair<string, LoginSuccessViewModel>("Role not found.", null);
             // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();            
+            var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Role, role.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(AppCommon.SymmetricSecurityKey), SecurityAlgorithms.HmacSha256Signature)
@@ -133,15 +151,30 @@ namespace AspCoreBl.Bl
                 UserName = user.UserName,
                 Email = user.Email,
                 Token = tokenHandler.WriteToken(token)
-        };
+            };
             return new KeyValuePair<string, LoginSuccessViewModel>("", loginSuccessViewModel);
 
+        }
+
+        public async Task<bool> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return false;
+
+            var resetCode = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var fullname = user.FirstName + " " + user.LastName;
+            var mailContent = await EmailBodyCreator.CreateResetPasswordEmailBody(Utilities.GetCurrHost(_httpContext), fullname, user.Email, resetCode);
+            var fullName = user.FirstName + " " + user.LastName;
+            await _emailService.SendMailAsync(new List<MailAddress>() { new MailAddress(user.Email, fullName) }, null, null, AppCommon.AppName + " - Reset Password", mailContent, null);
+
+            return true;
         }
 
         public async Task<bool> UserExist(IdentityUserDTO dto)
         {
 
-            var user = await _userManager.FindByNameAsync(dto.UserName);
+            var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
             {
                 return false;

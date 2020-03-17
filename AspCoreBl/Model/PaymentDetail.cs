@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AspCoreBl.Model
 {
-    public class PaymentDetail
+    public class PaymentDetail : BaseEntity
     {
         [Key]
         public int PMID { get; set; }
@@ -22,5 +22,6 @@ namespace AspCoreBl.Model
         [Required]
         [Column(TypeName = "nvarchar(3)")]
         public string CVV { get; set; }
+
     }
 }

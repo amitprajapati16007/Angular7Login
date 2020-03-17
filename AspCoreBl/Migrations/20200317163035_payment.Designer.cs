@@ -4,14 +4,16 @@ using AspCoreBl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspCoreBl.Migrations
 {
     [DbContext(typeof(PaymentDetailContext))]
-    partial class PaymentDetailContextModelSnapshot : ModelSnapshot
+    [Migration("20200317163035_payment")]
+    partial class payment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

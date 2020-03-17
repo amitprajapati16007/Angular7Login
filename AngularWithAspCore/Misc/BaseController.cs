@@ -22,7 +22,10 @@ namespace AngularWithAspCore.Misc
         {
             return Json(PrepareResultObject(status, message, data), AppCommon.SerializerSettings);
         }
-
+        public IActionResult OKResult<T>(T data) where T : class
+        {
+            return Json(PrepareResultObject<object>(null, null, data), AppCommon.SerializerSettings);
+        }
         public IActionResult OKResult<T>(string message, T data) where T : class
         {
             return Json(PrepareResultObject<object>(null, message, data), AppCommon.SerializerSettings);

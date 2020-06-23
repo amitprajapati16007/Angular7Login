@@ -36,6 +36,14 @@ namespace AngularWithAspCore.Controllers
             return OKResult(res);
         }
 
+        [HttpGet]
+        [Route("getpaymentlist")]
+        public  DataSourceResult<PaymentDetailDTO> GetPaymentDetailList(PagedResult obj)
+        {
+            var res =  _paymentDetailRepository.GetPaymentDetailList(obj);
+            return res;
+        }
+
         [HttpPost]
         [Route("postpaymentdetail")]
         public void PostPaymentDetail([FromBody]PaymentDetailDTO dto)

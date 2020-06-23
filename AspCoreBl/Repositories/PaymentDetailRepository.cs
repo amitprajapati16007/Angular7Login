@@ -18,6 +18,28 @@ namespace AspCoreBl.Repositories
         {
             _db = db;
         }
+
+        public DataSourceResult<PaymentDetailDTO> GetPaymentDetailList(PagedResult obj)
+        {
+            var query = from p in _db.PaymentDetail
+                        select new PaymentDetailDTO()
+                        {
+                            PMID = p.PMID,
+                            CardOwnerName = p.CardOwnerName,
+                            CardNumber = p.CardNumber
+                        };
+
+            obj.RowCount = query.Count();
+            var pageCount = (double)obj.RowCount / obj.PageSize;
+            obj.PageCount = (int)Math.Ceiling(pageCount);
+            var skip = (obj.CurrentPage - 1) * obj.PageSize;
+            var queryResult = query.Skip(skip).Take(obj.PageSize).ToList();
+            var DataSourceResult = new DataSourceResult<PaymentDetailDTO>();
+
+            DataSourceResult.Data = queryResult;
+            DataSourceResult.Total = obj.RowCount;
+            return DataSourceResult;
+        }
         public async Task<DataSourceResult<PaymentDetailDTO>> ListAsync(Query q)
         {
             var query = from p in _db.PaymentDetail

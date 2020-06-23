@@ -15,9 +15,14 @@ namespace AspCoreBl.Model
 
     public class PagedResult
     {
+        public PagedResult()
+        {
+            CurrentPage = 1;
+            PageSize = 10;
+        }
         public int CurrentPage { get; set; }
         public int PageCount { get; set; }
-        public int PageSize { get; set; }
+        public int PageSize  { get; set; }
         public int RowCount { get; set; }
 
     }

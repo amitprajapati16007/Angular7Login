@@ -8,6 +8,7 @@ using AspCoreBl.Interfaces;
 using AspCoreBl.Misc;
 using AspCoreBl.Model;
 using AspCoreBl.ModelDTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace AngularWithAspCore.Controllers
 {
-    // [Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     public class PaymentDetailController : BaseController
     {
@@ -26,7 +27,12 @@ namespace AngularWithAspCore.Controllers
             _paymentDetailRepository = PaymentDetailRepositoryy;
         }
 
-       
+        /// <summary>
+        /// Post men call
+        /// https://localhost:44330/api/PaymentDetail/getpaymentlist?q={PageNo:1}
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("getpaymentlist")]
         public async Task<IActionResult> GetPayMentList(string q)
@@ -36,9 +42,15 @@ namespace AngularWithAspCore.Controllers
             return OKResult(res);
         }
 
+
+        /// <summary>
+        /// https://localhost:44330/api/PaymentDetail/GetPaymentDetail?CurrentPage=2&PageSize=12
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("getpaymentlist")]
-        public  DataSourceResult<PaymentDetailDTO> GetPaymentDetailList(PagedResult obj)
+        [Route("GetPaymentDetail")]
+        public  DataSourceResult<PaymentDetailDTO> GetPaymentDetail(PagedResult obj)
         {
             var res =  _paymentDetailRepository.GetPaymentDetailList(obj);
             return res;
@@ -46,11 +58,12 @@ namespace AngularWithAspCore.Controllers
 
         [HttpPost]
         [Route("postpaymentdetail")]
-        public void PostPaymentDetail([FromBody]PaymentDetailDTO dto)
+        public IActionResult PostPaymentDetail([FromBody]PaymentDetailDTO dto)
         {
             try
             {
                 _paymentDetailRepository.Save(dto);
+                return OKResult("Data save Successfully");
             }
             catch (Exception ex)
             {

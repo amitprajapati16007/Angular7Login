@@ -27,17 +27,16 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            FirstName: ['', Validators.required],
+            LastName: ['', Validators.required],
+            Email: ['', Validators.required],
+            Password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
 
     // convenience getter for easy access to form fields
     get f() { return this.registerForm.controls; }
     onRegister() {
-        debugger;
         this.loading = true;
 
         if (this.registerForm.invalid) {
@@ -46,9 +45,10 @@ export class RegisterComponent implements OnInit {
         }
 
         let model = new RegisterModel();
-        model.email = this.registerForm.value.email;
-        model.firstName = this.registerForm.value.firstName;
-        model.lastName = this.registerForm.value.lastName;
+        model.Email = this.registerForm.value.Email;
+        model.FirstName = this.registerForm.value.FirstName;
+        model.LastName = this.registerForm.value.LastName;
+        model.Password = this.registerForm.value.Password;
 
         // model = new RegisterModel();
 

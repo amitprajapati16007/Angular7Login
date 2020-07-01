@@ -5,6 +5,7 @@ import { BaseApiService } from "../services/base-api-service.service";
 import { RegisterModel } from "../models/account/register.model";
 import { HttpClient } from "@angular/common/http";
 import { Component, Inject } from '@angular/core';
+
 @Injectable()
 export class AccountService extends BaseApiService {
     baseUrl: string
@@ -20,7 +21,6 @@ export class AccountService extends BaseApiService {
     //     return this.postWithoutAuth("/api/account/login", model);
     // }
     public register(model: RegisterModel): Observable<ApiRes> {
-        debugger;
         return this.postWithoutAuth(this.baseUrl+"ApplicationUser/PostApplicationUser", model);
     }
 }

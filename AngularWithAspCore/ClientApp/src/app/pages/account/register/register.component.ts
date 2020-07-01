@@ -5,6 +5,7 @@ import { RegisterModel } from '../../../models/account/register.model';
 //import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 //import { pageSlideUpAnimation } from '../../misc/page.animation';
+//import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
     constructor(
         private accountService: AccountService,
         private formBuilder: FormBuilder,
-//        private toastrService: ToastrService,
+  //      private toastrService: ToastrService,
         private router: Router) {
     }
 
@@ -60,7 +61,7 @@ export class RegisterComponent implements OnInit {
                         this.registerForm.reset();
                         break;
                     case -3:
-                        //this.toastrService.error("The email you have entered, is already exists. Please try another email.");
+                       // this.toastrService.error("The email you have entered, is already exists. Please try another email.");
                         break;
                     case -4:
                         //this.toastrService.error("User was successfully created but we failed to sent email. Please try again.");

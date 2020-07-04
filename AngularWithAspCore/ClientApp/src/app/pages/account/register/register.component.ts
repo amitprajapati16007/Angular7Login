@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from "../../../services/AccountService";
 import { RegisterModel } from '../../../models/account/register.model';
-//import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 //import { pageSlideUpAnimation } from '../../misc/page.animation';
-//import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-register',
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
     constructor(
         private accountService: AccountService,
         private formBuilder: FormBuilder,
-  //      private toastrService: ToastrService,
+        private toastrService: ToastrService,
         private router: Router) {
     }
 
@@ -60,23 +60,8 @@ export class RegisterComponent implements OnInit {
                       //  this.isConfirmEmailSent = true;
                         this.registerForm.reset();
                         break;
-                    case -3:
-                       // this.toastrService.error("The email you have entered, is already exists. Please try another email.");
-                        break;
-                    case -4:
-                        //this.toastrService.error("User was successfully created but we failed to sent email. Please try again.");
-                        break;
-                    case -6:
-                        //this.toastrService.error("User is successfully created but we failed to sent email. Please contact administrator for help.");
-                        break;
-                    case -7:
-                        //this.toastrService.error("User is successfully created but we failed to set role. Please contact administrator for help.");
-                        break;
-                    case -8:
-                        //this.toastrService.error("User was successfully created but we failed to set role. Please try again.");
-                        break;
                     default:
-                        //this.toastrService.error("Some error occured on server during registration process. Please try again.");
+                        this.toastrService.error(res.message);
                         break;
                 }
 

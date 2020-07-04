@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
@@ -64,7 +65,7 @@ namespace AspCoreBl.Bl
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
             {
-                return new KeyValuePair<int, string>(-2, result.Errors.ToString());
+                return new KeyValuePair<int, string>(-2, result.Errors.FirstOrDefault()?.Description.ToLower());
             }
             var roleRes = await _userManager.AddToRoleAsync(user, Role.WebUser.ToString());
             if (!roleRes.Succeeded)

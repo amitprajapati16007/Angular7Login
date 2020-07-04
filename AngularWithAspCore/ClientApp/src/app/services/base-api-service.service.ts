@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from "rxjs";
-import { ApiRes } from "../models/api-res.model";
-import { AppConsts } from "../misc/app.consts";
+import { Observable } from 'rxjs';
+import { ApiRes } from '../models/api-res.model';
+import { AppConsts } from '../misc/app.consts';
 
 
 @Injectable({
@@ -18,11 +18,13 @@ export class BaseApiService {
     private mapHttpParams(params: any): HttpParams {
         let httpParams = new HttpParams();
         for (let x in params) {
-            var val = params[x];
-            if (typeof val === "object")
+            let val = params[x];
+            if (typeof val === 'object') {
                 val = JSON.stringify(val);
-            else
+            }
+            else {
                 val = val.toString();
+            }
             httpParams = httpParams.append(x, val);
         }
 

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -12,10 +12,9 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { LoginComponent } from './pages/account/login/login.component';
 import { RegisterComponent } from './pages/account/register/register.component';
 import { AppRoutingModule } from './/app-routing.module';
-// import { ToastrModule } from 'ngx-toastr';
-// import { CommonModule } from '@angular/common';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
- 
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -33,9 +32,9 @@ import { AppRoutingModule } from './/app-routing.module';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(AppRoutingModule),
-    // CommonModule,
-    // BrowserAnimationsModule, // required animations module
-    // ToastrModule.forRoot() // ToastrModule added
+    CommonModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot() // ToastrModule added
   ],
   providers: [],
   bootstrap: [AppComponent]

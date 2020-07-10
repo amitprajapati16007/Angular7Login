@@ -87,7 +87,11 @@ namespace AngularWithAspCore.Controllers
             try
             {
                 var result = await _aApplicationUserRepository.LoginAsync(dto);
-                return OKResult(result.Key, result.Value);
+                if (!string.IsNullOrEmpty(result.Key))
+                {
+                    return OKResult(0, result.Key);
+                }
+                return OKResult(1,result.Key, result.Value);
             }
             catch (Exception ex)
             {

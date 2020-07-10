@@ -31,6 +31,7 @@ namespace AngularWithAspCore.Misc
             return Json(PrepareResultObject<object>(null, message, data), AppCommon.SerializerSettings);
         }
 
+
         public IActionResult OtherResult(HttpStatusCode code, string message)
         {
             var res = new JsonResult(PrepareResultObject(null, message, (object)null), AppCommon.SerializerSettings)

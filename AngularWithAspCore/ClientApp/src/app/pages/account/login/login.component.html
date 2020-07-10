@@ -1,22 +1,55 @@
-<h2>Login</h2>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-            <div *ngIf="f.username.errors.required">Username is required</div>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-5 mx-auto">
+                    <div class="shadow-sm card border-secondary">
+                        <div class="card-header">
+                            <h3 class="mb-0 my-2">Sign In</h3>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()" autocomplete="off">
+                                <div class="form-group">
+                                    <label for="inputUsername">Username</label>
+                                    <input type="text" id="inputUsername" placeholder="Username" formControlName="userName"
+                                           class="form-control" [ngClass]="{ 'is-invalid': (f.userName.dirty || f.userName.touched) && f.userName.errors }">
+                                    <div *ngIf="(f.userName.dirty || f.userName.touched) && f.userName.errors" class="invalid-feedback">
+                                        <div *ngIf="f.userName.errors.required">Username is required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPasswd">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="inputPasswd" #inputPasswd
+                                               placeholder="Password" formControlName="password" [ngClass]="{ 'is-invalid': (f.password.dirty || f.password.touched) && f.password.errors }">
+                                        <div class="input-group-append">
+                                            <button type="button" (click)="inputPasswd.type=inputPasswd.type=='password'?'text':'password'"
+                                                    class="btn btn-default">
+                                                <i *ngIf="inputPasswd.type=='text'" class="fa fa-eye-slash" aria-hidden="true"></i>
+                                                <i *ngIf="inputPasswd.type=='password'" class="fa fa-eye" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div *ngIf="(f.password.dirty || f.password.touched) && f.password.errors" class="invalid-feedback">
+                                            <div *ngIf="f.password.errors.required">Password is required</div>
+                                            <div *ngIf="f.password.errors.minlength">
+                                                Password must be at least 8
+                                                characters
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="loading" type="submit" class="btn btn-primary float-right">
+                                        <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i>&nbsp;</span>LOGIN
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <p class="m-2 text-center">Forgot your password? <a [routerLink]="['/forgotpassword']">Click here</a></p>
+                    <!--<p class="m-2 text-center">New user? <a [routerLink]="['/register']">Register here</a></p>-->
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Password is required</div>
-        </div>
-    </div>
-    <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">Login</button>
-        <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        <a routerLink="/register" class="btn btn-link">Register</a>
-    </div>
-</form>
+</div>

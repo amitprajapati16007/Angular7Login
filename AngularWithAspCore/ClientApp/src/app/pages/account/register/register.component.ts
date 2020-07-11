@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
     loading = false;
     submitted = false;
-
+    isConfirmEmailSent = false;
     
     constructor(
         private accountService: AccountService,
@@ -57,7 +57,8 @@ export class RegisterComponent implements OnInit {
             res => {
                 switch (res.status) {
                     case 1:
-                      //  this.isConfirmEmailSent = true;
+                        this.toastrService.success(res.message);
+                        this.isConfirmEmailSent = true;
                         this.registerForm.reset();
                         break;
                     default:

@@ -26,10 +26,10 @@ export class AccountService extends BaseApiService {
     public register(model: RegisterModel): Observable<ApiRes> {
         return this.postWithoutAuth('/api/ApplicationUser/PostApplicationUser', model);
      }
-    // public confirmEmail(email: string, code: string): Observable<ApiRes> {
-    //     let params = { email: email, code: code };
-    //     return this.getByParamsWithoutAuth("/api/account/confirmemail", params);
-    // }
+    public confirmEmail(email: string, code: string): Observable<ApiRes> {
+        let params = { email: email, code: code };
+        return this.getByParamsWithoutAuth("/api/ApplicationUser/ConfirmEmailAsync", params);
+    }
 
     // public setPassword(model: SetPasswordModel): Observable<ApiRes> {
     //     return this.postWithoutAuth("/api/account/setpassword", model);

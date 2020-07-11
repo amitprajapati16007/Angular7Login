@@ -1,5 +1,5 @@
 <h2>Register commite</h2>
-<form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+<form *ngIf="!isConfirmEmailSent" [formGroup]="registerForm" (ngSubmit)="onRegister()">
     <div class="form-group">
         <label for="FirstName">First Name</label>
         <input type="text" formControlName="FirstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }" />
@@ -36,3 +36,12 @@
         <a routerLink="/login" class="btn btn-link">Cancel</a>
     </div>
 </form>
+
+<div class="card-body text-center" *ngIf="isConfirmEmailSent">
+    <div>
+        <h4>Just about there...</h4>
+    </div>
+    <div>
+        Please check your inbox to confirm your account
+    </div>
+</div>

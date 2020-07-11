@@ -10,6 +10,8 @@ import { CanActivate } from "@angular/router";
 import { Routes, Router } from "@angular/router";
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
+
 //import { AuthService } from "./services/app.auth.service";
 
 // @NgModule({
@@ -41,4 +43,5 @@ export const AppRoutingModule : Routes = [
       { path: 'register', component: RegisterComponent },
       { path: "confirmemail", component: ConfirmEmailComponent },
       { path: "forgotpassword", component: ForgotpasswordComponent },
+      { path: "resetpassword", component: ResetpasswordComponent },
 ]

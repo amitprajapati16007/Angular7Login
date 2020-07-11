@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpa
     LoginComponent,
     RegisterComponent,
     ConfirmEmailComponent,
-    ForgotpasswordComponent
+    ForgotpasswordComponent,
+    ResetpasswordComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

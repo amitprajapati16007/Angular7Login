@@ -4,6 +4,7 @@ import { ApiRes } from "../models/api-res.model";
 import { BaseApiService } from "../services/base-api-service.service";
 import { RegisterModel } from "../models/account/register.model";
 import { LoginModel } from "../models/account/login-model";
+import { ResetPasswordModel } from "../models/account/reset-password-model";
 import { HttpClient } from "@angular/common/http";
 import { Component, Inject } from '@angular/core';
 @Injectable()
@@ -43,9 +44,9 @@ export class AccountService extends BaseApiService {
         return this.getByParamsWithoutAuth("/api/ApplicationUser/forgotpassword", { email: email });
     }
 
-    // public resetPassword(model: ResetPasswordModel): Observable<ApiRes> {
-    //     return this.postWithoutAuth("/api/account/resetpassword", model);
-    // }
+    public resetPassword(model: ResetPasswordModel): Observable<ApiRes> {
+        return this.postWithoutAuth("/api/ApplicationUser/resetpassword", model);
+    }
 
     // public changePassword(model: ChangePasswordModel): Observable<ApiRes> {
     //     return this.post("/api/account/changepassword", model);

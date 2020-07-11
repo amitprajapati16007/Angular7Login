@@ -17,7 +17,7 @@ namespace AspCoreBl.Misc
 
             var currHostUrl = hostUrl;
 
-            var confirmEmailRouteUrlPart = "/ConfirmEmail?email=[email]&code=[code]";
+            var confirmEmailRouteUrlPart = "/confirmemail?email=[email]&code=[code]";
 
             var callbackUrl = "javascript:void(0)";
             if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(email))

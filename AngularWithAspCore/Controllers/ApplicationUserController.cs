@@ -113,7 +113,7 @@ namespace AngularWithAspCore.Controllers
             if (result)
                 return OKResult(1, "Email sent for resetting password.");
 
-            return OtherResult(HttpStatusCode.BadRequest, "User not found for provided email.");
+            return OKResult(0, "User not found for provided email.");
         }
 
         [HttpPost]

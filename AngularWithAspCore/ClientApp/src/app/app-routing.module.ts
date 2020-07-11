@@ -9,6 +9,7 @@ import { Injectable } from "@angular/core";
 import { CanActivate } from "@angular/router";
 import { Routes, Router } from "@angular/router";
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
+import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 //import { AuthService } from "./services/app.auth.service";
 
 // @NgModule({
@@ -39,4 +40,5 @@ export const AppRoutingModule : Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: "confirmemail", component: ConfirmEmailComponent },
+      { path: "forgotpassword", component: ForgotpasswordComponent },
 ]

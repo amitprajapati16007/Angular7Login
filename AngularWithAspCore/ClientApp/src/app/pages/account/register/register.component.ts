@@ -4,7 +4,6 @@ import { AccountService } from '../../../services/account.service';
 import { RegisterModel } from '../../../models/account/register.model';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-//import { pageSlideUpAnimation } from '../../misc/page.animation';
 
 
 @Component({

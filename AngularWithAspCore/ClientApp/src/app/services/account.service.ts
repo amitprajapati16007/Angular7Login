@@ -39,9 +39,9 @@ export class AccountService extends BaseApiService {
     //     return this.getByParamsWithoutAuth("/api/account/check/usernameexist", { userName: username });
     // }
 
-    // public requestResetPassword(email: string): Observable<ApiRes> {
-    //     return this.getByParamsWithoutAuth("/api/account/forgotpassword", { email: email });
-    // }
+    public requestResetPassword(email: string): Observable<ApiRes> {
+        return this.getByParamsWithoutAuth("/api/ApplicationUser/forgotpassword", { email: email });
+    }
 
     // public resetPassword(model: ResetPasswordModel): Observable<ApiRes> {
     //     return this.postWithoutAuth("/api/account/resetpassword", model);

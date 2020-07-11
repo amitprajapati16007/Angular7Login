@@ -16,6 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
+import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail
     FetchDataComponent,
     LoginComponent,
     RegisterComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

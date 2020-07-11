@@ -4,7 +4,7 @@ import { AccountService } from '../../../services/account.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResetPasswordModel } from '../../../models/account/reset-password-model';
-
+import { AuthService } from '../../../services/auth-service.service';
 
 @Component({
   selector: 'app-resetpassword',
@@ -23,6 +23,7 @@ export class ResetpasswordComponent implements OnInit {
         private accountService: AccountService,
         private formBuilder: FormBuilder,
         private toastrService: ToastrService,
+        private authService: AuthService,
         private router: Router) {
         this.email = this.route.snapshot.queryParams.email;
         this.code = this.route.snapshot.queryParams.code;
@@ -56,8 +57,9 @@ export class ResetpasswordComponent implements OnInit {
         this.accountService.resetPassword(model).subscribe(
             res => {
                 if (res.status === 1) {
-                   // this.authService.setCurrentUser(res.data);
+                    this.authService.setCurrentUser(res.data);
                     this.toastrService.success(res.message);
+                    this.router.navigate(['/home']);
                 }
                 else if (res.status === 2) {
                     this.toastrService.error(res.message);

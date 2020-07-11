@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-import { AccountService } from "../../../services/account.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../../../services/account.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-
+import { AuthService } from '../../../services/auth-service.service'
 @Component({
     selector: "login",
     templateUrl: "./login.component.html",
@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
         private accountService: AccountService,
         private formBuilder: FormBuilder,
         private toastrService: ToastrService,
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
@@ -47,8 +48,8 @@ export class LoginComponent implements OnInit {
                 debugger;
                 switch (res.status) {
                     case 1:
-                       // this.authService.setCurrentUser(res.data);
-                    this.router.navigate(["/page1"]);
+                        this.authService.setCurrentUser(res.data);
+                        this.router.navigate(["/home"]);
                          break;
                      default:
                          this.toastrService.error(res.message);

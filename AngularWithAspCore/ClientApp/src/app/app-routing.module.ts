@@ -11,28 +11,24 @@ import { Routes, Router } from "@angular/router";
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
+import { AuthService } from './services/auth-service.service';
 
-//import { AuthService } from "./services/app.auth.service";
+@Injectable()
+export class AuthGuardService implements CanActivate {
+    constructor(private authService: AuthService, private router: Router) { }
 
-// @NgModule({
-//   imports: [
-//     CommonModule
-//   ],
-//   declarations: []
-// })
-
-//import { AuthService } from "./services/app.auth.service";
-
-
-// @Injectable()
-// export class AuthGuardService implements CanActivate {
-//     constructor( private router: Router) { }
-
-//     canActivate() {
-//      // this.router.navigate(["/login"]);
-//       return false;
-//     }
-// }
+    canActivate() {
+        if (
+            this.authService.isUserLoggedIn() &&
+            !this.authService.isTokenExpired()
+        ) {
+            return true;
+        } else {
+            this.router.navigate(["/login"]);
+            return false;
+        }
+    }
+}
 
 
 export const AppRoutingModule : Routes = [ 

@@ -40,4 +40,6 @@ export const AppRoutingModule : Routes = [
       { path: "confirmemail", component: ConfirmEmailComponent },
       { path: "forgotpassword", component: ForgotpasswordComponent },
       { path: "resetpassword", component: ResetpasswordComponent },
+      { path: "home", component: HomeComponent },
+      
 ]

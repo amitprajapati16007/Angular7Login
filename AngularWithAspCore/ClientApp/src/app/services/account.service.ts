@@ -52,7 +52,7 @@ export class AccountService extends BaseApiService {
     //     return this.post("/api/account/changepassword", model);
     // }
 
-    // public logout(): Observable<ApiRes> {
-    //     return this.get("/api/account/logout");
-    // }
+    public logout(): Observable<ApiRes> {
+        return this.get("/api/ApplicationUser/logout");
+    }
 }

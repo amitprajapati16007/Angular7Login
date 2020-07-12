@@ -3,6 +3,7 @@ import { Headers, RequestOptions } from '@angular/http';
 import { CurrUser } from "../models/curr-user";
 import * as jwt_decode from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
+import {  HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
@@ -16,8 +17,11 @@ export class AuthService {
     public getAuthHeader() {
         let currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
         if (currentUser && currentUser.token) {
-            let header = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-            return new RequestOptions({ headers: header });
+            // let header = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+            // return new RequestOptions({ headers: header });
+            let headers = new HttpHeaders();
+            headers = headers.set('Authorization', 'Bearer ' + currentUser.token  );
+            return headers;
         }
         else {
             return null;

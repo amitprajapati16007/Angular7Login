@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiRes } from '../models/api-res.model';
 import { AppConsts } from '../misc/app.consts';
+import { AuthService } from '../services/auth-service.service';
 
 
 @Injectable({
@@ -11,6 +12,7 @@ import { AppConsts } from '../misc/app.consts';
 export class BaseApiService {
 
   private skipAuthHeaders = new HttpHeaders().set(AppConsts.interceptorSkipAuthHeader, '');
+  private authService = new AuthService();
 
     constructor(private httpClient: HttpClient) {
     }
@@ -32,7 +34,7 @@ export class BaseApiService {
     }
 
     public get(url: string): Observable<ApiRes> {
-        return this.httpClient.get<ApiRes>(url);
+        return this.httpClient.get<ApiRes>(url, { headers: this.authService.getAuthHeader() });
     }
 
     public getWithoutAuth(url: string): Observable<ApiRes> {

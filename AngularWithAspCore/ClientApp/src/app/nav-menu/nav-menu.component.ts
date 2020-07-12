@@ -34,17 +34,18 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+      debugger;
       this.isUserLoggedIn = this.authService.isUserLoggedIn();
       if (this.isUserLoggedIn) {
           let currUser = this.authService.getCurrentUser();
           if (currUser != null)
-              this.fullname = currUser.firstName + " " + currUser.lastName;
+              this.fullname = currUser.userName;
 
       }
 
       this.currUserSetSubscription = this.authService.onCurrUserSet.subscribe(currUser => {
           if (currUser != null) {
-              this.fullname = currUser.firstName + " " + currUser.lastName;
+              this.fullname = currUser.userName;
               this.isUserLoggedIn = true;
           }
       });

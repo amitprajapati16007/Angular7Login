@@ -39,13 +39,13 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       if (this.isUserLoggedIn) {
           let currUser = this.authService.getCurrentUser();
           if (currUser != null)
-              this.fullname = currUser.userName;
+              this.fullname = currUser.firstName + " " + currUser.lastName;
 
       }
 
       this.currUserSetSubscription = this.authService.onCurrUserSet.subscribe(currUser => {
           if (currUser != null) {
-              this.fullname = currUser.userName;
+              this.fullname = currUser.firstName + " " + currUser.lastName;
               this.isUserLoggedIn = true;
           }
       });

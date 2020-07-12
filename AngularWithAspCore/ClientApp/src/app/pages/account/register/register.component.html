@@ -1,47 +1,73 @@
-<h2>Register commite</h2>
-<form *ngIf="!isConfirmEmailSent" [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <div class="form-group">
-        <label for="FirstName">First Name</label>
-        <input type="text" formControlName="FirstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FirstName.errors }" />
-        <div *ngIf="submitted && f.FirstName.errors" class="invalid-feedback">
-            <div *ngIf="f.FirstName.errors.required">First Name is required</div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="LastName">Last Name</label>
-        <input type="text" formControlName="LastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.LastName.errors }" />
-        <div *ngIf="submitted && f.LastName.errors" class="invalid-feedback">
-            <div *ngIf="f.LastName.errors.required">Last Name is required</div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="Email">Email</label>
-        <input type="text" formControlName="Email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Email.errors }" />
-        <div *ngIf="submitted && f.Email.errors" class="invalid-feedback">
-            <div *ngIf="f.Email.errors.required">Email is required</div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="Password">Password</label>
-        <input type="Password" formControlName="Password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Password.errors }" />
-        <div *ngIf="submitted && f.Password.errors" class="invalid-feedback">
-            <div *ngIf="f.Password.errors.required">Password is required</div>
-            <div *ngIf="f.Password.errors.minlength">Password must be at least 6 characters</div>
-        </div>
-    </div>
-    <div class="form-group">
-        <button [disabled]="loading||registerForm.invalid" type="submit" class="btn btn-primary"><span
-            *ngIf="loading"><i class="fa fa-spinner fa-spin"></i>&nbsp;</span>Register</button>
-        <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        <a routerLink="/login" class="btn btn-link">Cancel</a>
-    </div>
-</form>
+<div class="container py-5">
 
-<div class="card-body text-center" *ngIf="isConfirmEmailSent">
-    <div>
-        <h4>Just about there...</h4>
-    </div>
-    <div>
-        Please check your inbox to confirm your account
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-5 mx-auto">
+                    <div class="shadow-sm card border-secondary">
+                        <div class="card-header">
+                            <h3 class="mb-0 my-2">Sign Up</h3>
+                        </div>
+                        <div class="card-body" *ngIf="!isConfirmEmailSent">
+                            <form class="form" [formGroup]="registerForm" (ngSubmit)="onRegister()" autocomplete="off">
+                                <div class="form-group">
+                                    <label for="inputFirstName">First name</label>
+                                    <input type="text" id="inputFirstName" placeholder="First name" formControlName="FirstName"
+                                        class="form-control" [ngClass]="{ 'is-invalid': (f.FirstName.dirty || f.FirstName.touched) && f.FirstName.errors }">
+                                    <div *ngIf="(f.FirstName.dirty || f.FirstName.touched) && f.FirstName.errors" class="invalid-feedback">
+                                        <div *ngIf="f.FirstName.errors.required">First name is required</div>
+                                        <div *ngIf="f.FirstName.errors.maxlength">First name cannot be more than 60
+                                            characters</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputLastName">Last name</label>
+                                    <input type="text" id="inputLastName" placeholder="Last name" formControlName="LastName"
+                                        class="form-control" [ngClass]="{ 'is-invalid': (f.LastName.dirty || f.LastName.touched) && f.LastName.errors }">
+                                    <div *ngIf="(f.LastName.dirty || f.LastName.touched) && f.LastName.errors" class="invalid-feedback">
+                                        <div *ngIf="f.LastName.errors.required">Last name is required</div>
+                                        <div *ngIf="f.LastName.errors.maxlength">Last name cannot be more than 60
+                                            characters</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputEmail">Email</label>
+                                    <input type="text" id="inputEmail" placeholder="Email" formControlName="Email"
+                                        class="form-control" [ngClass]="{ 'is-invalid': (f.Email.dirty || f.Email.touched) && f.Email.errors }">
+                                    <div *ngIf="(f.Email.dirty || f.Email.touched) && f.Email.errors" class="invalid-feedback">
+                                        <div *ngIf="f.Email.errors.required">Email is required</div>
+                                        <div *ngIf="f.Email.errors.Email">Email must be a valid Email address</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword">Password</label>
+                                    <input type="Password" id="inputPassword" placeholder="Password" formControlName="Password"
+                                        class="form-control" [ngClass]="{ 'is-invalid': (f.Password.dirty || f.Password.touched) && f.Password.errors }">
+                                    <div *ngIf="(f.Password.dirty || f.Password.touched) && f.Password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.Password.errors.required">Password is required</div>
+                                        <div *ngIf="f.Password.errors.minlength">Password must be at least 6 characters</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="loading||registerForm.invalid" type="submit" class="btn btn-primary float-right"><span
+                                            *ngIf="loading"><i class="fa fa-spinner fa-spin"></i>&nbsp;</span>Register</button>
+                                    <img *ngIf="loading" class="pl-3 float-right" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                            <a routerLink="/login" class="btn btn-link">Cancel</a>                                               
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-body text-center" *ngIf="isConfirmEmailSent">
+                            <div>
+                                <h4>Just about there...</h4>
+                            </div>
+                            <div>
+                                Please check your inbox to confirm your account
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
     </div>
 </div>

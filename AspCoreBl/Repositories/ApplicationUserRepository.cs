@@ -154,6 +154,8 @@ namespace AspCoreBl.Bl
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
+                FirstName=user.FirstName,
+                LastName = user.LastName,
                 Token = tokenHandler.WriteToken(token)
             };
             return new KeyValuePair<string, LoginSuccessViewModel>("", loginSuccessViewModel);

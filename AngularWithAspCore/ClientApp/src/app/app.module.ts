@@ -18,6 +18,7 @@ import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
 import { AuthService } from './services/auth-service.service';
+import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AuthService } from './services/auth-service.service';
     RegisterComponent,
     ConfirmEmailComponent,
     ForgotpasswordComponent,
-    ResetpasswordComponent
+    ResetpasswordComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

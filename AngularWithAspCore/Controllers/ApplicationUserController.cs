@@ -158,7 +158,7 @@ namespace AngularWithAspCore.Controllers
             if (result.Key == 1)
                 return OKResult(result.Key, "Password successfully changed. Login successful.", result.Value);
 
-            return OKResult(result.Key, "Change password falied.", result.Value);
+            return OKResult(result.Key, result.Value.ToString());
         }
 
         [HttpGet]

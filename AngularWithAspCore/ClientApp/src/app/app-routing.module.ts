@@ -11,6 +11,7 @@ import { Routes, Router } from "@angular/router";
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
+import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
 import { AuthService } from './services/auth-service.service';
 
 @Injectable()
@@ -41,5 +42,7 @@ export const AppRoutingModule : Routes = [
       { path: "forgotpassword", component: ForgotpasswordComponent },
       { path: "resetpassword", component: ResetpasswordComponent },
       { path: "home", component: HomeComponent },
+
+      { path: "changepassword", component: ChangePasswordComponent , canActivate: [AuthGuardService]},
       
 ]

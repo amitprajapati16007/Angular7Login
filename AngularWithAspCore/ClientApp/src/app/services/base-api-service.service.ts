@@ -58,7 +58,7 @@ export class BaseApiService {
     }
 
     public post<T>(url: string, data: T): Observable<ApiRes> {
-        return this.httpClient.post<ApiRes>(url, data);
+        return this.httpClient.post<ApiRes>(url, data, { headers: this.authService.getAuthHeader() });
     }
 
     public postWithoutAuth<T>(url: string, data: T): Observable<ApiRes> {

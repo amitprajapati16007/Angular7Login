@@ -206,7 +206,7 @@ namespace AspCoreBl.Bl
                 if (loginRes.Key != null)
                     return new KeyValuePair<int, object>(1, loginRes.Value);
             }
-            return new KeyValuePair<int, object>(2, result.Errors);
+            return new KeyValuePair<int, object>(2, result.Errors.FirstOrDefault()?.Description.ToLower());
         }
 
         public async Task<bool> UserExist(IdentityUserDTO dto)

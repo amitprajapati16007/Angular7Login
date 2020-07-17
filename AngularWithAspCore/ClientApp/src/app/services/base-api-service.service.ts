@@ -34,7 +34,7 @@ export class BaseApiService {
     }
 
     public get(url: string): Observable<ApiRes> {
-        return this.httpClient.get<ApiRes>(url, { headers: this.authService.getAuthHeader() });
+        return this.httpClient.get<ApiRes>(url);
     }
 
     public getWithoutAuth(url: string): Observable<ApiRes> {
@@ -58,7 +58,7 @@ export class BaseApiService {
     }
 
     public post<T>(url: string, data: T): Observable<ApiRes> {
-        return this.httpClient.post<ApiRes>(url, data, { headers: this.authService.getAuthHeader() });
+        return this.httpClient.post<ApiRes>(url, data);
     }
 
     public postWithoutAuth<T>(url: string, data: T): Observable<ApiRes> {

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule, AuthGuardService } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +19,7 @@ import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpa
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
 import { AuthService } from './services/auth-service.service';
 import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
+import { RequestInterceptor } from './misc/request-interceptor';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,12 @@ import { ChangePasswordComponent } from './pages/account/change-password/change-
   ],
   providers: [
     AuthService,
-    AuthGuardService
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true,
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -14,20 +14,7 @@ export class AuthService {
     private currUserRemovedSource = new BehaviorSubject<boolean>(false);
     onCurrUserRemoved: Observable<boolean> = this.currUserRemovedSource.asObservable();
 
-    public getAuthHeader() {
-        let currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
-        if (currentUser && currentUser.token) {
-            // let header = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-            // return new RequestOptions({ headers: header });
-            let headers = new HttpHeaders();
-            headers = headers.set('Authorization', 'Bearer ' + currentUser.token  );
-            return headers;
-        }
-        else {
-            return null;
-        }
-    }
-
+    
     public isUserLoggedIn() {
         let currUser = this.getCurrentUser();
         if (currUser && currUser.token) {

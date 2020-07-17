@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -20,6 +20,8 @@ import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassw
 import { AuthService } from './services/auth-service.service';
 import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
 import { RequestInterceptor } from './misc/request-interceptor';
+import { ResponseInterceptor } from './misc/response-interceptor';
+import { GlobalErrorHandler } from './misc/global-error-handler';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,17 @@ import { RequestInterceptor } from './misc/request-interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ResponseInterceptor,
+      multi: true,
+    },
+    {
+        provide: ErrorHandler,
+        useClass: GlobalErrorHandler
     }
+    
   ],
   bootstrap: [AppComponent]
 })

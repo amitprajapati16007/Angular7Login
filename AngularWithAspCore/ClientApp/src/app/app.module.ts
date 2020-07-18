@@ -22,6 +22,9 @@ import { ChangePasswordComponent } from './pages/account/change-password/change-
 import { RequestInterceptor } from './misc/request-interceptor';
 import { ResponseInterceptor } from './misc/response-interceptor';
 import { GlobalErrorHandler } from './misc/global-error-handler';
+import { AppPaginationComponent } from './components/pagination/app-pagination/app-pagination.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PaymentComponent } from './pages/payment/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,9 @@ import { GlobalErrorHandler } from './misc/global-error-handler';
     ConfirmEmailComponent,
     ForgotpasswordComponent,
     ResetpasswordComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    AppPaginationComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -45,7 +50,8 @@ import { GlobalErrorHandler } from './misc/global-error-handler';
     RouterModule.forRoot(AppRoutingModule),
     CommonModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot() // ToastrModule added
+    ToastrModule.forRoot(), // ToastrModule added
+    NgbModule,
   ],
   providers: [
     AuthService,

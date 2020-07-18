@@ -1,0 +1,26 @@
+<h1>Payment</h1>
+
+
+
+
+<table class='table table-striped' >
+  <thead>
+    <tr>
+      <!-- <th sort [model]="sort" (getData)="getPayments()" [title]="'cardOwnerName '" [columnName]="'cardOwnerName'" scope="col"></th> -->
+      <th>cardOwnerName</th>
+      <th>cardNumber</th>
+      <th>expirationDate</th>
+      <th>cVV</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of data">
+      <td>{{ t.cardOwnerName }}</td>
+      <td>{{ t.cardNumber }}</td>
+      <td>{{ t.expirationDate }}</td>
+      <td>{{ t.cVV }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<app-pagination [paginator]="paginator" (getData)="getPayments()"></app-pagination>

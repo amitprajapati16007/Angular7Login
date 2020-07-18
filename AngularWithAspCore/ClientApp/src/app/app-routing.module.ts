@@ -12,6 +12,7 @@ import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
 import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
+import { PaymentComponent } from './pages/payment/payment/payment.component';
 import { AuthService } from './services/auth-service.service';
 
 @Injectable()
@@ -44,5 +45,6 @@ export const AppRoutingModule : Routes = [
       { path: "home", component: HomeComponent },
 
       { path: "changepassword", component: ChangePasswordComponent , canActivate: [AuthGuardService]},
+      { path: "payment", component: PaymentComponent , canActivate: [AuthGuardService]},
       
 ]

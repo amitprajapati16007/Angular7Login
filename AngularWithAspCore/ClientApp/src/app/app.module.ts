@@ -22,10 +22,9 @@ import { ChangePasswordComponent } from './pages/account/change-password/change-
 import { RequestInterceptor } from './misc/request-interceptor';
 import { ResponseInterceptor } from './misc/response-interceptor';
 import { GlobalErrorHandler } from './misc/global-error-handler';
-import { AppPaginationComponent } from './components/pagination/app-pagination/app-pagination.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentComponent } from './pages/payment/payment/payment.component';
-
+import { AppCommonModule } from './app-common-module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,10 +38,10 @@ import { PaymentComponent } from './pages/payment/payment/payment.component';
     ForgotpasswordComponent,
     ResetpasswordComponent,
     ChangePasswordComponent,
-    AppPaginationComponent,
     PaymentComponent
   ],
   imports: [
+    AppCommonModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,

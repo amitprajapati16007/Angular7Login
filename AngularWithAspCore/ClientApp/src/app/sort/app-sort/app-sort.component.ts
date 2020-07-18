@@ -3,7 +3,7 @@ import { Sort } from 'src/app/misc/query';
 import { SortOrder } from 'src/app/misc/appenums';
 
 @Component({
-  selector: 'app-app-sort',
+  selector: '[sort]',
   templateUrl: './app-sort.component.html'
 })
 export class AppSortComponent implements OnInit {

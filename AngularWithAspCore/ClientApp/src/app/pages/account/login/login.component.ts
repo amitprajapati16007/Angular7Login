@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthServiceSys } from '../../../services/auth-service.service'
 import { AuthService } from "angularx-social-login";
-import { FacebookLoginProvider } from "angularx-social-login";
+import { FacebookLoginProvider ,GoogleLoginProvider} from "angularx-social-login";
 import { SocialUser } from "angularx-social-login";
 
 @Component({
@@ -36,8 +36,6 @@ export class LoginComponent implements OnInit {
         });
 
         this.authService.authState.subscribe((user) => {
-            debugger;
-            console.log("amit");
             this.user = user;
             this.loggedIn = (user != null);
           });
@@ -48,6 +46,12 @@ export class LoginComponent implements OnInit {
               this.externalloginasync();
            });
       } 
+      signInWithGoogle(): void {
+        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(x => 
+            {
+               this.externalloginasync();
+            });
+      }
 
       signOut(): void {
         this.authService.signOut();

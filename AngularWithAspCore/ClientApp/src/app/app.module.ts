@@ -26,11 +26,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentComponent } from './pages/payment/payment/payment.component';
 import { AppCommonModule } from './app-common-module';
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
-import {  FacebookLoginProvider } from "angularx-social-login";
+import {  FacebookLoginProvider,GoogleLoginProvider } from "angularx-social-login";
 
 
 
 let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("36217918798-ilrukrjjqov0kovue5atcifajqjtmv2j.apps.googleusercontent.com")
+  },
   {
     id: FacebookLoginProvider.PROVIDER_ID,
     provider: new FacebookLoginProvider("906223719882190")

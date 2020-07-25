@@ -4,7 +4,7 @@ import { AccountService } from '../../../services/account.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResetPasswordModel } from '../../../models/account/reset-password-model';
-import { AuthService } from '../../../services/auth-service.service';
+import { AuthServiceSys } from '../../../services/auth-service.service';
 
 @Component({
   selector: 'app-resetpassword',
@@ -23,7 +23,7 @@ export class ResetpasswordComponent implements OnInit {
         private accountService: AccountService,
         private formBuilder: FormBuilder,
         private toastrService: ToastrService,
-        private authService: AuthService,
+        private authService: AuthServiceSys,
         private router: Router) {
         this.email = this.route.snapshot.queryParams.email;
         this.code = this.route.snapshot.queryParams.code;

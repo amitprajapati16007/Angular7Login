@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {  HttpHeaders } from '@angular/common/http';
 
 @Injectable()
-export class AuthService {
+export class AuthServiceSys {
 
     private currUserSetSource = new BehaviorSubject<CurrUser>(null);
     onCurrUserSet: Observable<CurrUser> = this.currUserSetSource.asObservable();

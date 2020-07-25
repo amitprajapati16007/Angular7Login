@@ -13,11 +13,11 @@ import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpa
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
 import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
 import { PaymentComponent } from './pages/payment/payment/payment.component';
-import { AuthService } from './services/auth-service.service';
+import { AuthServiceSys } from './services/auth-service.service';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthServiceSys, private router: Router) { }
 
     canActivate() {
         if (

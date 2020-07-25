@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AccountService } from "../services/account.service";
-import { AuthService } from "../services/auth-service.service";
+import { AuthServiceSys } from "../services/auth-service.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 @Component({
@@ -27,7 +27,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   private currUserRemovedSubscription: Subscription;
 
   constructor(
-      private authService: AuthService,
+      private authService: AuthServiceSys,
       private accountService: AccountService,
       private router: Router
   ) {

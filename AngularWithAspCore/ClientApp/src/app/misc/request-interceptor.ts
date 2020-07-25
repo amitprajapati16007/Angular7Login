@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth-service.service';
+import { AuthServiceSys } from '../services/auth-service.service';
 import { AppConsts } from './app.consts';
 
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthServiceSys) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (request.headers.has(AppConsts.interceptorSkipAuthHeader)) {
             const headers = request.headers.delete(AppConsts.interceptorSkipAuthHeader);

@@ -3,7 +3,11 @@ import { AccountService } from '../../../services/account.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { AuthService } from '../../../services/auth-service.service'
+import { AuthServiceSys } from '../../../services/auth-service.service'
+import { AuthService } from "angularx-social-login";
+import { FacebookLoginProvider } from "angularx-social-login";
+import { SocialUser } from "angularx-social-login";
+
 @Component({
     selector: "login",
     templateUrl: "./login.component.html",
@@ -13,12 +17,16 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
 
+    private user: SocialUser;
+    private loggedIn: boolean;
+
     constructor(
         private accountService: AccountService,
         private formBuilder: FormBuilder,
         private toastrService: ToastrService,
         private router: Router,
-        private authService: AuthService
+        private authServicesys: AuthServiceSys,
+        private authService: AuthService,
     ) {}
 
     ngOnInit(): void {
@@ -26,8 +34,21 @@ export class LoginComponent implements OnInit {
             userName: ["", [Validators.required]],
             password: ["", [Validators.required, Validators.minLength(8)]]
         });
-    }
 
+        this.authService.authState.subscribe((user) => {
+            debugger;
+            this.user = user;
+            this.loggedIn = (user != null);
+          });
+    }
+    signInWithFB(): void {        
+        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(x => console.log(x));
+      } 
+
+      signOut(): void {
+        this.authService.signOut();
+      }
+     
     get f() {
         return this.loginForm.controls;
     }
@@ -48,7 +69,7 @@ export class LoginComponent implements OnInit {
                 debugger;
                 switch (res.status) {
                     case 1:
-                        this.authService.setCurrentUser(res.data);
+                        this.authServicesys.setCurrentUser(res.data);
                         this.router.navigate(["/home"]);
                          break;
                      default:

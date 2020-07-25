@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from '../../../services/account.service';
-import { AuthService } from '../../../services/auth-service.service';
+import { AuthServiceSys } from '../../../services/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ChangePasswordModel } from '../../../models/account/change-password-model';
@@ -17,7 +17,7 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
       private accountService: AccountService,
-      private authService: AuthService,
+      private authService: AuthServiceSys,
       private formBuilder: FormBuilder,
       private toastrService: ToastrService,
       private router: Router

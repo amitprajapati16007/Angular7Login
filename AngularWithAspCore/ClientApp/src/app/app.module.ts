@@ -17,7 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmEmailComponent } from './pages/account/confirmemail/confirmemail.component';
 import { ForgotpasswordComponent } from './pages/account/forgotpassword/forgotpassword.component';
 import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassword.component';
-import { AuthService } from './services/auth-service.service';
+import { AuthServiceSys } from './services/auth-service.service';
 import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
 import { RequestInterceptor } from './misc/request-interceptor';
 import { ResponseInterceptor } from './misc/response-interceptor';
@@ -25,6 +25,21 @@ import { GlobalErrorHandler } from './misc/global-error-handler';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaymentComponent } from './pages/payment/payment/payment.component';
 import { AppCommonModule } from './app-common-module';
+import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+import {  FacebookLoginProvider } from "angularx-social-login";
+
+
+
+let config = new AuthServiceConfig([
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("906223719882190")
+  }
+]);
+
+export function provideConfig() {
+  return config;
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,9 +66,10 @@ import { AppCommonModule } from './app-common-module';
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     NgbModule,
+    SocialLoginModule
   ],
   providers: [
-    AuthService,
+    AuthServiceSys,
     AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
@@ -68,8 +84,12 @@ import { AppCommonModule } from './app-common-module';
     {
         provide: ErrorHandler,
         useClass: GlobalErrorHandler
+    },
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
     }
-    
+
   ],
   bootstrap: [AppComponent]
 })

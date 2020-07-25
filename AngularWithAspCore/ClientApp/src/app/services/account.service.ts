@@ -8,6 +8,7 @@ import { ResetPasswordModel } from "../models/account/reset-password-model";
 import { ChangePasswordModel } from "../models/account/change-password-model";
 import { HttpClient } from "@angular/common/http";
 import { Component, Inject } from '@angular/core';
+import { SocialUser } from "angularx-social-login";
 @Injectable()
 export class AccountService extends BaseApiService {
     url: string;
@@ -24,6 +25,10 @@ export class AccountService extends BaseApiService {
 
         return this.postWithoutAuth("/api/ApplicationUser/LoginAsync", model);
     }
+
+    public externalloginasync(model:SocialUser): Observable<ApiRes> {
+       return this.postWithoutAuth("/api/ApplicationUser/externalloginasync", model);
+   }
 
     public register(model: RegisterModel): Observable<ApiRes> {
         return this.postWithoutAuth('/api/ApplicationUser/PostApplicationUser', model);

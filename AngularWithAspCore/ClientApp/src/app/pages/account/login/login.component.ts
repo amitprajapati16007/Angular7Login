@@ -37,12 +37,16 @@ export class LoginComponent implements OnInit {
 
         this.authService.authState.subscribe((user) => {
             debugger;
+            console.log("amit");
             this.user = user;
             this.loggedIn = (user != null);
           });
     }
     signInWithFB(): void {        
-        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(x => console.log(x));
+        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(x => 
+           {
+              this.externalloginasync();
+           });
       } 
 
       signOut(): void {
@@ -53,6 +57,27 @@ export class LoginComponent implements OnInit {
         return this.loginForm.controls;
     }
 
+    externalloginasync() {
+        this.loading = true;
+        this.accountService.externalloginasync(this.user).subscribe(
+            res => {
+                debugger;
+                switch (res.status) {
+                    case 1:
+                        this.authServicesys.setCurrentUser(res.data);
+                        this.router.navigate(["/home"]);
+                         break;
+                     default:
+                         this.toastrService.error(res.message);
+                         break;
+                 }
+                this.loading = false;
+            },
+            err => {
+                this.loading = false;
+            }
+        );
+    }
     onLogin() {
         this.loading = true;
 

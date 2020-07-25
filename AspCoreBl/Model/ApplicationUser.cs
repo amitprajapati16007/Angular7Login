@@ -16,5 +16,7 @@ namespace AspCoreBl.Model
         [Required]
         [MaxLength(60)]
         public string LastName { get; set; }
+
+        public bool isSocialLogin { get; set; }
     }
 }

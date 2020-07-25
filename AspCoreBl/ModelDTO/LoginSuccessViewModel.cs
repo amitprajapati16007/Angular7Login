@@ -32,6 +32,8 @@ namespace AspCoreBl.ModelDTO
         public string Token { get; set; }
 
         public int RoleId { get; set; }
+
+        public bool isSocialLogin { get; set; }
     }
     public class ResetPasswordViewModel
     {

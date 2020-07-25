@@ -3,6 +3,8 @@ import { AccountService } from "../services/account.service";
 import { AuthServiceSys } from "../services/auth-service.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
+import { AuthService } from "angularx-social-login";
+import { SocialUser } from "angularx-social-login";
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
@@ -11,7 +13,7 @@ import { Subscription } from "rxjs";
 })
 export class NavMenuComponent implements OnInit, OnDestroy {
   isExpanded = false;
-
+  private user: SocialUser;
   collapse() {
     this.isExpanded = false;
   }
@@ -27,33 +29,40 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   private currUserRemovedSubscription: Subscription;
 
   constructor(
-      private authService: AuthServiceSys,
+      private AuthServiceSys: AuthServiceSys,
       private accountService: AccountService,
-      private router: Router
+      private router: Router,
+      private authService: AuthService,
   ) {
   }
 
   ngOnInit(): void {
-      this.isUserLoggedIn = this.authService.isUserLoggedIn();
+      this.isUserLoggedIn = this.AuthServiceSys.isUserLoggedIn();
       if (this.isUserLoggedIn) {
-          let currUser = this.authService.getCurrentUser();
+          let currUser = this.AuthServiceSys.getCurrentUser();
           if (currUser != null)
               this.fullname = currUser.firstName + " " + currUser.lastName;
 
       }
 
-      this.currUserSetSubscription = this.authService.onCurrUserSet.subscribe(currUser => {
+      this.currUserSetSubscription = this.AuthServiceSys.onCurrUserSet.subscribe(currUser => {
           if (currUser != null) {
               this.fullname = currUser.firstName + " " + currUser.lastName;
               this.isUserLoggedIn = true;
           }
       });
 
-      this.currUserRemovedSubscription = this.authService.onCurrUserRemoved.subscribe(isRemoved => {
+      this.currUserRemovedSubscription = this.AuthServiceSys.onCurrUserRemoved.subscribe(isRemoved => {
           if (isRemoved) {
               this.fullname = "";
               this.isUserLoggedIn = false;
           }
+      });
+
+      //discuss with jigar
+      this.authService.authState.subscribe((user) => {
+        this.user = user;
+        this.isUserLoggedIn = (user != null);
       });
   }
 
@@ -65,7 +74,10 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   onLogout() {
       this.accountService.logout().subscribe(res => {
           if (res.status === 1) {
-              this.authService.removeCurrentUser();
+              this.AuthServiceSys.removeCurrentUser();
+              // remove from social login 
+              debugger;
+              this.authService.signOut();
               this.router.navigate(['/login']);
           }
       });

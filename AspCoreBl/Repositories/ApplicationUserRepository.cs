@@ -232,6 +232,79 @@ namespace AspCoreBl.Bl
             await _signInManager.SignOutAsync();
         }
 
+        #region External login
+        public async Task<KeyValuePair<string, LoginSuccessViewModel>> ExternalLoginAsync(SocialUser dto)
+        {
+
+            var result = await _signInManager.ExternalLoginSignInAsync(dto.provider, dto.id, isPersistent: false);
+            if (!result.Succeeded) //user does not exist yet
+            {
+                var aplicationUser = new ApplicationUser()
+                {
+                    UserName = dto.email,
+                    Email = dto.email,
+                    FirstName = dto.firstName,
+                    LastName = dto.lastName,
+                    EmailConfirmed = true,
+                    isSocialLogin=true,
+                };
+                var resultRgister = await _userManager.CreateAsync(aplicationUser);
+                if (!resultRgister.Succeeded)
+                {
+                    return new KeyValuePair<string, LoginSuccessViewModel>(resultRgister.Errors.FirstOrDefault()?.Description.ToLower(),null);
+                }
+                var roleRes = await _userManager.AddToRoleAsync(aplicationUser, Role.WebUser.ToString());
+                UserLoginInfo UserLoginInfo = new UserLoginInfo(dto.provider,dto.id,dto.email);
+                await _userManager.AddLoginAsync(aplicationUser, UserLoginInfo);
+                if (!roleRes.Succeeded)
+                {
+
+                    var resDeleteUser = await _userManager.DeleteAsync(aplicationUser);
+                    if (!resDeleteUser.Succeeded)
+                    {
+                        return new KeyValuePair<string, LoginSuccessViewModel>("User successfully created but failed to set role, tried to remove user but error occured.",null);
+                    }
+
+                    return new KeyValuePair<string, LoginSuccessViewModel>("User successfully created but failed to set role, removed user.",null);
+                }
+
+            }
+
+            var user = await _userManager.FindByNameAsync(dto.email);
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = (Role)Enum.Parse(typeof(Role), roles[0]);
+
+            if (role == Role.System) return new KeyValuePair<string, LoginSuccessViewModel>("Role not found.", null);
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Name, user.UserName),  
+                        new Claim(ClaimTypes.Role, role.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(8),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(AppCommon.SymmetricSecurityKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var loginSuccessViewModel = new LoginSuccessViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                isSocialLogin=user.isSocialLogin,
+                Token = tokenHandler.WriteToken(token)
+            };
+            return new KeyValuePair<string, LoginSuccessViewModel>("", loginSuccessViewModel);
+
+        }
+        #endregion
 
     }
 }

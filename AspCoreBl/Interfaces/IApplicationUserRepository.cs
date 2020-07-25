@@ -1,5 +1,6 @@
 ﻿using AspCoreBl.Model;
 using AspCoreBl.ModelDTO;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -19,5 +20,7 @@ namespace AspCoreBl.Interfaces
         Task<KeyValuePair<int, object>> ChangePasswordAsync(ChangePasswordViewModel model, ApplicationUser user);
         Task<ApplicationUser> GetSingleAsyncs(Expression<Func<ApplicationUser, bool>> predicate, params Expression<Func<ApplicationUser, object>>[] includeProperties);
         Task LogoutAsync();
+
+        Task<KeyValuePair<string, LoginSuccessViewModel>> ExternalLoginAsync(SocialUser dto);
     }
 }

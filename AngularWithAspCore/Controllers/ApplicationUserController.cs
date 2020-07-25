@@ -168,5 +168,28 @@ namespace AngularWithAspCore.Controllers
             await _aApplicationUserRepository.LogoutAsync();
             return OKResult(1, "Logout successful.");
         }
+
+        #region Externallogin
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("externalloginasync")]
+        public async Task<IActionResult> ExternalLoginAsync(SocialUser dto)
+        {
+            try
+            {
+                var result = await _aApplicationUserRepository.ExternalLoginAsync(dto);
+                if (!string.IsNullOrEmpty(result.Key))
+                {
+                    return OKResult(0, result.Key);
+                }
+                return OKResult(1, result.Key, result.Value);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        #endregion
     }
 }

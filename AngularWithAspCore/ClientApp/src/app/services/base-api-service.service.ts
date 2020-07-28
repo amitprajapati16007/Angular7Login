@@ -12,7 +12,6 @@ import { AuthServiceSys } from '../services/auth-service.service';
 export class BaseApiService {
 
   private skipAuthHeaders = new HttpHeaders().set(AppConsts.interceptorSkipAuthHeader, '');
-  private authService = new AuthServiceSys();
 
     constructor(private httpClient: HttpClient) {
     }

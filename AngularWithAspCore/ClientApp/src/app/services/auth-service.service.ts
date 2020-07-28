@@ -5,15 +5,16 @@ import * as jwt_decode from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {  HttpHeaders } from '@angular/common/http';
 
+
 @Injectable()
 export class AuthServiceSys {
-
+    
     private currUserSetSource = new BehaviorSubject<CurrUser>(null);
     onCurrUserSet: Observable<CurrUser> = this.currUserSetSource.asObservable();
 
     private currUserRemovedSource = new BehaviorSubject<boolean>(false);
     onCurrUserRemoved: Observable<boolean> = this.currUserRemovedSource.asObservable();
-
+    
     
     public isUserLoggedIn() {
         let currUser = this.getCurrentUser();
@@ -24,7 +25,7 @@ export class AuthServiceSys {
             return false;
         }
     }
-
+    
     public getToken() {
         try {
             let currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
@@ -45,6 +46,21 @@ export class AuthServiceSys {
             let currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
             if (currentUser && currentUser.id) {
                 return currentUser.id;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (ex) {
+            return null;
+        }
+    }
+
+    public getSocialLogin() {
+        try {
+            let currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
+            if (currentUser && currentUser.isSocialLogin) {
+                return true;
             }
             else {
                 return null;

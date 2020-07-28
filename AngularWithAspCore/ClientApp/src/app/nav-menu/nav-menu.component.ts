@@ -4,7 +4,7 @@ import { AuthServiceSys } from "../services/auth-service.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "angularx-social-login";
-import { SocialUser } from "angularx-social-login";
+
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
@@ -13,7 +13,7 @@ import { SocialUser } from "angularx-social-login";
 })
 export class NavMenuComponent implements OnInit, OnDestroy {
   isExpanded = false;
-  private user: SocialUser;
+  
   collapse() {
     this.isExpanded = false;
   }
@@ -59,11 +59,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
           }
       });
 
-      //discuss with jigar
-      this.authService.authState.subscribe((user) => {
-        this.user = user;
-        this.isUserLoggedIn = (user != null);
-      });
+      
   }
 
   ngOnDestroy(): void {

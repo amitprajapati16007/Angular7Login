@@ -14,11 +14,25 @@ import { ResetpasswordComponent } from './pages/account/resetpassword/resetpassw
 import { ChangePasswordComponent } from './pages/account/change-password/change-password.component';
 import { PaymentComponent } from './pages/payment/payment/payment.component';
 import { AuthServiceSys } from './services/auth-service.service';
-
+import { AuthService } from "angularx-social-login";
+import { SocialUser } from "angularx-social-login";
 @Injectable()
 export class AuthGuardService implements CanActivate {
-    constructor(private authService: AuthServiceSys, private router: Router) { }
-
+    private user: SocialUser;
+    constructor(private authService: AuthServiceSys, private router: Router,private AuthServiceSocial: AuthService) { 
+        let currSocialLogin = this.authService.getSocialLogin();
+        if(currSocialLogin){
+                //discuss with jigar
+                this.AuthServiceSocial.authState.subscribe((user) => {
+                    this.user= user;
+                });
+                if(this.user==null){
+                    this.authService.removeCurrentUser();
+                    this.router.navigate(["/login"]);
+                    
+                }  
+        }
+    }
     canActivate() {
         if (
             this.authService.isUserLoggedIn() &&

@@ -20,21 +20,46 @@ import { SocialUser } from "angularx-social-login";
 export class AuthGuardService implements CanActivate {
     private user: SocialUser;
     constructor(private authService: AuthServiceSys, private router: Router,private AuthServiceSocial: AuthService) { 
+       
+    }
+    // loginFacebook(access_token) {
+ 
+    //     let token = localStorage.getItem('access_token');
+   
+    //     let body = JSON.stringify(access_token);
+   
+    //     const httpOptions = {
+   
+    //       headers: new HttpHeaders({'Content-Type': 'application/json'})
+   
+    //     };
+   
+    //     return this.http.post&lt;AuthorizationEntity&gt;(this.baseUrl + '/social/facebook', body, httpOptions);
+   
+    // }
+    canActivateSocial() {
         let currSocialLogin = this.authService.getSocialLogin();
         if(currSocialLogin){
                 //discuss with jigar
+                debugger;
                 this.AuthServiceSocial.authState.subscribe((user) => {
                     this.user= user;
                 });
                 if(this.user==null){
                     this.authService.removeCurrentUser();
                     this.router.navigate(["/login"]);
+                    return false;
                     
                 }  
+                return true;
+        }
+        else{
+            return true;
         }
     }
     canActivate() {
         if (
+            this.canActivateSocial() &&
             this.authService.isUserLoggedIn() &&
             !this.authService.isTokenExpired()
         ) {

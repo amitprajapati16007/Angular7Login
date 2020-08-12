@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,Output,EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,6 +7,10 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AddPayment {
   @Input() name;
-
+  @Output() childEvent = new EventEmitter();
+  test(){
+    this.activeModal.dismiss('Cross click');
+    this.childEvent.emit();
+}
   constructor(public activeModal: NgbActiveModal) {}
 }

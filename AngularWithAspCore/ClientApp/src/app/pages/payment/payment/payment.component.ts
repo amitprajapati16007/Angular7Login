@@ -25,10 +25,13 @@ export class PaymentComponent implements OnInit {
     config.backdrop = 'static';
     config.keyboard = false;
   }
-
+ 
   open() {
     const modalRef = this.modalService.open(AddPayment);
     modalRef.componentInstance.name = 'World';
+    modalRef.componentInstance.childEvent.subscribe(($e) => {
+      this.getPayments();
+    })
   }
   ngOnInit() {
   }

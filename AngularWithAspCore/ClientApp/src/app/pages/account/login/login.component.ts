@@ -37,7 +37,10 @@ export class LoginComponent implements OnInit {
 
         this.authService.authState.subscribe((user) => {
             this.user = user;
-            this.loggedIn = (user != null);
+            this.loggedIn= (user != null);
+            if(this.loggedIn)  {
+                this.router.navigate(["/home"])
+            }
           });
     }
     signInWithFB(): void {        

@@ -1,8 +1,7 @@
 <h1>Payment</h1>
 
 
-
-
+<button class="btn btn-lg btn-outline-primary float-right" (click)="open()">Add Payment</button>
 <table class='table table-striped' >
   <thead>
     <tr>
@@ -25,3 +24,5 @@
 
 <app-pagination [paginator]="paginator" (getData)="getPayments()"></app-pagination>
 <app-loader [isLoading]="loading"></app-loader>
+
+

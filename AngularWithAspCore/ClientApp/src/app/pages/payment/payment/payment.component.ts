@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Query, Sort, Paginator } from '../../../misc/query';
 import { PaymentViewModel } from '../../payment/payment-view-model';
 import { BaseApiService } from 'src/app/services/base-api-service.service';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddPayment } from 'src/app/pages/payment/payment/addpayment';
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
-  providers: [BaseApiService]
+  providers: [BaseApiService,NgbModalConfig, NgbModal]
 })
 export class PaymentComponent implements OnInit {
   sort: Sort = new Sort();
@@ -18,9 +20,16 @@ export class PaymentComponent implements OnInit {
     expirationDate: null
   };
   
-  constructor(private apiService: BaseApiService) {
+  constructor(private apiService: BaseApiService,config: NgbModalConfig, private modalService: NgbModal) {
+    // customize default values of modals used by this component tree
+    config.backdrop = 'static';
+    config.keyboard = false;
   }
 
+  open() {
+    const modalRef = this.modalService.open(AddPayment);
+    modalRef.componentInstance.name = 'World';
+  }
   ngOnInit() {
   }
   getPayments() {

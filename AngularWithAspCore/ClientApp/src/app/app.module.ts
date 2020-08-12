@@ -27,6 +27,8 @@ import { PaymentComponent } from './pages/payment/payment/payment.component';
 import { AppCommonModule } from './app-common-module';
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import {  FacebookLoginProvider,GoogleLoginProvider } from "angularx-social-login";
+import { AddPayment } from 'src/app/pages/payment/payment/addpayment';
+
 
 
 
@@ -57,8 +59,10 @@ export function provideConfig() {
     ForgotpasswordComponent,
     ResetpasswordComponent,
     ChangePasswordComponent,
-    PaymentComponent
+    PaymentComponent,
+    AddPayment
   ],
+  entryComponents: [AddPayment],
   imports: [
     AppCommonModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

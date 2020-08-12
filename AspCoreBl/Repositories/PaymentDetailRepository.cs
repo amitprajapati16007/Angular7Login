@@ -47,7 +47,9 @@ namespace AspCoreBl.Repositories
                         {
                             PMID = p.PMID,
                             CardOwnerName = p.CardOwnerName,
-                            CardNumber = p.CardNumber
+                            CardNumber = p.CardNumber,
+                            CVV=p.CVV,
+                            expirationDate=p.expirationDate
                         };
             return await query.ToDatsSourceResultAsync(q);
         }

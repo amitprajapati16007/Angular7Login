@@ -4,6 +4,7 @@ import { PaymentViewModel } from '../../payment/payment-view-model';
 import { BaseApiService } from 'src/app/services/base-api-service.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddPayment } from 'src/app/pages/payment/payment/addpayment';
+import { fail } from 'assert';
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
@@ -26,9 +27,18 @@ export class PaymentComponent implements OnInit {
     config.keyboard = false;
   }
  
-  open() {
+  addedit(obj) {
     const modalRef = this.modalService.open(AddPayment);
-    modalRef.componentInstance.name = 'World';
+    if(obj){
+      modalRef.componentInstance.isedit = true;
+      modalRef.componentInstance.payment=obj;
+    }    
+    else {
+      modalRef.componentInstance.isedit = false;
+      modalRef.componentInstance.payment=new PaymentViewModel();
+    } 
+    
+    
     modalRef.componentInstance.childEvent.subscribe(($e) => {
       this.getPayments();
     })

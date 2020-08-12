@@ -1,7 +1,7 @@
 export class PaymentViewModel {
-    pMID:number;
+    pmid:number;
     cardOwnerName:string;
     cardNumber:string;
     expirationDate:string;
-    cVV:string;
+    cvv:string;
 }

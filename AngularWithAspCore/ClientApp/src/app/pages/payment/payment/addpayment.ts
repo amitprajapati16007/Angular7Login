@@ -10,25 +10,31 @@ import { ToastrService } from 'ngx-toastr';
   providers: [PaymentService]
 })
 export class AddPayment implements OnInit  {
-  @Input() name;
+  @Input() isedit;
+  @Input() payment=new PaymentViewModel();
   @Output() childEvent = new EventEmitter();
   payemntForm: FormGroup;
   loading = false;
-  test(){
-    
-}
   constructor(public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private paymentService: PaymentService,
     private toastrService: ToastrService,) {}
 
   ngOnInit() {
+    // this.payemntForm = this.formBuilder.group({
+    //     CardOwnerName: [this.payment.cardOwnerName, Validators.required],
+    //     CardNumber: [this.payment.cardNumber, [Validators.required, Validators.minLength(16)]],
+    //     expirationDate: [this.payment.expirationDate, [Validators.required, Validators.minLength(5)]],
+    //     CVV: [this.payment.cVV, [Validators.required, Validators.minLength(3)]]
+    // });
+
     this.payemntForm = this.formBuilder.group({
-        CardOwnerName: ['', Validators.required],
-        CardNumber: ['', [Validators.required, Validators.minLength(16)]],
-        expirationDate: ['', [Validators.required, Validators.minLength(5)]],
-        CVV: ['', [Validators.required, Validators.minLength(3)]]
+        CardOwnerName: [this.payment.cardOwnerName, Validators.required],
+        CardNumber: [this.payment.cardNumber, [Validators.required, Validators.minLength(16)]],
+        expirationDate: [this.payment.expirationDate, [Validators.required, Validators.minLength(5)]],
+        CVV: [this.payment.cvv, [Validators.required, Validators.minLength(3)]]
     });
+
 }
 get f() { return this.payemntForm.controls; }
 onSave() {
@@ -40,11 +46,19 @@ onSave() {
     }
 
     let model = new PaymentViewModel();
-    model.pMID = 0;
+    if(this.isedit){
+        
+
+    }  
+    else{
+        model.pmid = 0;
+    }
+    debugger;
+    model.pmid = this.payment.pmid;
     model.cardOwnerName = this.payemntForm.value.CardOwnerName;
     model.cardNumber = this.payemntForm.value.CardNumber;
     model.expirationDate = this.payemntForm.value.expirationDate;
-    model.cVV = this.payemntForm.value.CVV;
+    model.cvv = this.payemntForm.value.CVV;
 
     // model = new RegisterModel();
 

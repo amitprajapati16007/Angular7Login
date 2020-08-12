@@ -1,7 +1,7 @@
 <h1>Payment</h1>
 
 
-<button class="btn btn-lg btn-outline-primary float-right" (click)="open()">Add Payment</button>
+<button class="btn btn-lg btn-outline-primary float-right" (click)="addedit()">Add Payment</button>
 <table class='table table-striped' >
   <thead>
     <tr>
@@ -10,6 +10,7 @@
       <th>cardNumber</th>
       <th>expirationDate</th>
       <th>cVV</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -17,7 +18,8 @@
       <td>{{ t.cardOwnerName }}</td>
       <td>{{ t.cardNumber }}</td>
       <td>{{ t.expirationDate }}</td>
-      <td>{{ t.cVV }}</td>
+      <td>{{ t.cvv }}</td>
+      <td><button class="btn btn-lg btn-outline-primary" (click)="addedit(t)">Edit</button></td>
     </tr>
   </tbody>
 </table>

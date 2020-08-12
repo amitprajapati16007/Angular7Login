@@ -63,12 +63,12 @@ namespace AngularWithAspCore.Controllers
             try
             {
                 _paymentDetailRepository.Save(dto);
-                return OKResult("Data save Successfully");
+                //return OKResult("Data save Successfully");
+                return OKResult(1, "Data save Successfully");
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                return OKResult(2, ex.Message.ToString());
             }
         }
     }

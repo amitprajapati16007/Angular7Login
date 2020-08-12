@@ -4,10 +4,57 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    <p>Hello, {{name}}!</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="test()">CSave</button>
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-  </div>
+
+  
+    <form class="form" [formGroup]="payemntForm" (ngSubmit)="onSave()" autocomplete="off">
+        
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" id="inputCardOwnerName" placeholder="First name" formControlName="CardOwnerName"
+                    class="form-control" [ngClass]="{ 'is-invalid': (f.CardOwnerName.dirty || f.CardOwnerName.touched) && f.CardOwnerName.errors }">
+                <div *ngIf="(f.CardOwnerName.dirty || f.CardOwnerName.touched) && f.CardOwnerName.errors" class="invalid-feedback">
+                    <div *ngIf="f.CardOwnerName.errors.required">Card Owner name is required</div>
+                    <div *ngIf="f.CardOwnerName.errors.maxlength">First Owner name cannot be more than 50
+                        characters</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="text" id="inputCardNumber" placeholder="Card Number" formControlName="CardNumber"
+                    class="form-control" [ngClass]="{ 'is-invalid': (f.CardNumber.dirty || f.CardNumber.touched) && f.CardNumber.errors }">
+                <div *ngIf="(f.CardNumber.dirty || f.CardNumber.touched) && f.CardNumber.errors" class="invalid-feedback">
+                    <div *ngIf="f.CardNumber.errors.required">Card Number is required</div>
+                    <div *ngIf="f.CardNumber.errors.maxlength">Card Number  cannot be more than 16
+                        characters</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" id="inputexpirationDate" placeholder="expiration Date" formControlName="expirationDate"
+                    class="form-control" [ngClass]="{ 'is-invalid': (f.expirationDate.dirty || f.expirationDate.touched) && f.expirationDate.errors }">
+                <div *ngIf="(f.expirationDate.dirty || f.expirationDate.touched) && f.expirationDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.expirationDate.errors.required">expiration Date is required</div>
+                    <div *ngIf="f.expirationDate.errors.maxlength">expiration Date cannot be more than 5
+                        characters</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" id="inputCVV" placeholder="CVV" formControlName="CVV"
+                    class="form-control" [ngClass]="{ 'is-invalid': (f.CVV.dirty || f.CVV.touched) && f.CVV.errors }">
+                <div *ngIf="(f.CVV.dirty || f.CVV.touched) && f.CVV.errors" class="invalid-feedback">
+                    <div *ngIf="f.CVV.errors.required">CVV is required</div>
+                    <div *ngIf="f.CVV.errors.maxlength">CVV cannot be more than 3
+                        characters</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading||payemntForm.invalid" type="submit" class="btn btn-primary "><span
+                        *ngIf="loading"><i class="fa fa-spinner fa-spin"></i>&nbsp;</span>Save</button>
+                        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+          
+          
+        </div>
+    </form>
+  

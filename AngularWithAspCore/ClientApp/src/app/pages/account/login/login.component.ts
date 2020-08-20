@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
 
-    private user: SocialUser;
+    user: SocialUser;
     private loggedIn: boolean;
 
     constructor(
